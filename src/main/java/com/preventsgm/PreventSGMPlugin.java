@@ -28,16 +28,14 @@ public class PreventSGMPlugin extends Plugin {
 	@Inject
 	private PreventSGMConfig config;
 
-	private Widget superGlassMake;
-
 	// Gotta love magic numbers!
 	// These numbers were found with print debugging
 	private static final int WITHDRAW = 786445;
 	private static final int DEPOSIT_ALL = 786476;
 	private static final int DEPOSIT = 983043;
 	private static final int MAKE = 14286969;
-	// These numbers were found with the widget inspector
-	private static final int[] magicNumbers = {14286849, 14286851, 14286969};
+	// This numbers was found with the widget inspector
+	private static final int SUPERGLASS_MAKE = 14286969;
 
 	private int amountOfSeaweed = 0;
 	private int amountOfSand = 0;
@@ -50,6 +48,7 @@ public class PreventSGMPlugin extends Plugin {
 
 	@Override
 	protected void shutDown() throws Exception {
+		Widget superGlassMake = client.getWidget(SUPERGLASS_MAKE);
 		amountOfSand = 0;
 		amountOfSeaweed = 0;
 		enable(superGlassMake);
@@ -57,7 +56,7 @@ public class PreventSGMPlugin extends Plugin {
 
 	@Subscribe
 	public void onBeforeRender(BeforeRender event) {
-		superGlassMake = extractSuperglassMake(client);
+		Widget superGlassMake = client.getWidget(SUPERGLASS_MAKE);
 		if (superGlassMake == null || superGlassMake.isHidden()) {
 			return;
 		}
@@ -108,7 +107,6 @@ public class PreventSGMPlugin extends Plugin {
 		} else {
 			return;
 		}
-		changeSuperglassMake(superGlassMake);
 	}
 
 	private boolean checkInventory() {
@@ -132,30 +130,6 @@ public class PreventSGMPlugin extends Plugin {
 		widget.setOpacity(128);
 		widget.setAction(0, "");
 	}
-
-	@Nullable
-	private Widget extractSuperglassMake(Client client) {
-		if (client.getWidget(ComponentID.SPELLBOOK_PARENT) == null) {
-			return null;
-		}
-		Widget[] result = client.getWidget(ComponentID.SPELLBOOK_PARENT).getStaticChildren();
-		for (int magicNumber : magicNumbers) {
-			result = extractOneStep(result, magicNumber);
-		}
-		return result[0];
-	}
-
-	private Widget[] extractOneStep(Widget[] widgets, int magicNumber) {
-		Widget[] nextStep =
-				Arrays.stream(widgets)
-						.filter(widget -> widget.getId() == magicNumber)
-						.toArray(Widget[]::new);
-		if (magicNumber == magicNumbers[magicNumbers.length - 1]) {
-			return nextStep;
-		}
-		return nextStep[0].getStaticChildren();
-	}
-
 	@Provides
 	PreventSGMConfig provideConfig(ConfigManager configManager)
 	{
