@@ -99,10 +99,8 @@ public class PreventSGMPlugin extends Plugin {
 
 	private void updateInventory(int itemID) {
 		if (itemID == ItemID.GIANT_SEAWEED) {
-			System.out.println("clicked seaweed");
 			amountOfSeaweed += 1;
 		} else if (itemID == ItemID.BUCKET_OF_SAND) {
-			System.out.println("clicked sand");
 			amountOfSand += config.sand();
 		} else {
 			return;
