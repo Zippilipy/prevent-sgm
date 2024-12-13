@@ -98,6 +98,9 @@ public class PreventSGMPlugin extends Plugin {
 	}
 
 	private void updateInventory(int itemID) {
+		if (client.getWidget(ComponentID.BANK_CONTAINER).isHidden()) {
+			return;
+		}
 		if (itemID == ItemID.GIANT_SEAWEED) {
 			amountOfSeaweed += 1;
 		} else if (itemID == ItemID.BUCKET_OF_SAND) {
