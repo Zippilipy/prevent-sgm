@@ -56,7 +56,7 @@ public class PreventSGMPlugin extends Plugin {
 	}
 
 	@Subscribe
-	public void onClientTick(ClientTick event) {
+	public void onBeforeRender(BeforeRender event) {
 		superGlassMake = extractSuperglassMake(client);
 		if (superGlassMake == null || superGlassMake.isHidden()) {
 			return;
