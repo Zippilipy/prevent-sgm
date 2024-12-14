@@ -55,10 +55,9 @@ public class PreventSGMPlugin extends Plugin {
 
     @Subscribe
     public void onPlayerSpawned(PlayerSpawned event) {
-        if (superglassmake != null || client.getWidget(SUPERGLASS_MAKE) == null) {
-            return;
+        if (event.getPlayer().equals(client.getLocalPlayer())) {
+            superglassmake = new SuperGlassMakeFacade(client.getWidget(SUPERGLASS_MAKE));
         }
-        superglassmake = new SuperGlassMakeFacade(client.getWidget(SUPERGLASS_MAKE));
     }
 
     @Subscribe
