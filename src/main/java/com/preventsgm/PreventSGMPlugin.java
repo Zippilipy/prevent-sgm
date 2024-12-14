@@ -6,8 +6,8 @@ import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -19,7 +19,7 @@ import javax.inject.Inject;
 @PluginDescriptor(
         name = "Prevent Superglass Make",
         description = "Prevents casting superglass make if you do not "
-                      + "have exactly 18 buckets of sand and 3 giant seaweed.")
+                + "have exactly 18 buckets of sand and 3 giant seaweed.")
 public class PreventSGMPlugin extends Plugin {
     @Inject
     private Client client;
@@ -32,8 +32,10 @@ public class PreventSGMPlugin extends Plugin {
     private static final int DEPOSIT_ALL = 786476;
     private static final int DEPOSIT = 983043;
     private static final int MAKE = 14286969;
-    // This numbers was found with the widget inspector
+    // This number was found with the widget inspector
     private static final int SUPERGLASS_MAKE = 14286969;
+
+    private static SuperGlassMakeFacade superglassmake = null;
 
     private int amountOfSeaweed = 0;
     private int amountOfSand = 0;
@@ -48,16 +50,20 @@ public class PreventSGMPlugin extends Plugin {
     protected void shutDown() throws Exception {
         amountOfSand = 0;
         amountOfSeaweed = 0;
-        enable(client.getWidget(SUPERGLASS_MAKE));
+        superglassmake.toggle(true);
+    }
+
+    @Subscribe
+    public void onPlayerSpawned(PlayerSpawned event) {
+        if (superglassmake != null || client.getWidget(SUPERGLASS_MAKE) == null) {
+            return;
+        }
+        superglassmake = new SuperGlassMakeFacade(client.getWidget(SUPERGLASS_MAKE));
     }
 
     @Subscribe
     public void onBeforeRender(BeforeRender event) {
-        Widget superGlassMake = client.getWidget(SUPERGLASS_MAKE);
-        if (superGlassMake == null || superGlassMake.isHidden()) {
-            return;
-        }
-        changeSuperglassMake(superGlassMake);
+        superglassmake.toggle(checkInventory());
     }
 
     /*
@@ -101,31 +107,11 @@ public class PreventSGMPlugin extends Plugin {
             amountOfSeaweed += 1;
         } else if (itemID == ItemID.BUCKET_OF_SAND) {
             amountOfSand += config.sand();
-        } else {
-            return;
         }
     }
 
     private boolean checkInventory() {
         return amountOfSeaweed == config.seaweed() && amountOfSand == config.sand();
-    }
-
-    private void changeSuperglassMake(Widget widget) {
-        if (checkInventory()) {
-            enable(widget);
-        } else {
-            disable(widget);
-        }
-    }
-
-    private void enable(Widget widget) {
-        widget.setOpacity(0);
-        widget.setAction(0, "Superglass Make");
-    }
-
-    private void disable(Widget widget) {
-        widget.setOpacity(128);
-        widget.setAction(0, "");
     }
 
     @Provides
