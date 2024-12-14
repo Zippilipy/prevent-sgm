@@ -10,7 +10,7 @@ public class SuperGlassMakeFacade {
     }
 
     public void toggle(boolean check) {
-        if (superglassMake.isHidden()) return;
+        if (superglassMake == null || superglassMake.isHidden()) return;
         if (check) enable();
         else disable();
     }

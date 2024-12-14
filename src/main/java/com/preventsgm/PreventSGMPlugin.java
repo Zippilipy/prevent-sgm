@@ -35,7 +35,7 @@ public class PreventSGMPlugin extends Plugin {
     // This number was found with the widget inspector
     private static final int SUPERGLASS_MAKE = 14286969;
 
-    private static SuperGlassMakeFacade superglassmake = null;
+    private static SuperGlassMakeFacade superglassmake = new SuperGlassMakeFacade(null);
 
     private int amountOfSeaweed = 0;
     private int amountOfSand = 0;
