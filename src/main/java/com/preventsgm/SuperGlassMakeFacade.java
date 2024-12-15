@@ -15,6 +15,10 @@ public class SuperGlassMakeFacade {
         else disable();
     }
 
+    public void shutdown() {
+        enable();
+    }
+
     private void enable() {
         superglassMake.setOpacity(0);
         superglassMake.setAction(0, "Superglass Make");
