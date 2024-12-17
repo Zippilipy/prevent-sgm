@@ -8,6 +8,7 @@ import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -96,7 +97,8 @@ public class PreventSGMPlugin extends Plugin {
     }
 
     private void updateInventory(int itemID) {
-        if (client.getWidget(ComponentID.BANK_CONTAINER).isHidden()) {
+        Widget bank = client.getWidget(ComponentID.BANK_CONTAINER);
+        if (bank == null || bank.isHidden()) {
             return;
         }
         if (itemID == ItemID.GIANT_SEAWEED) {
