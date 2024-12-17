@@ -87,14 +87,11 @@ public class PreventSGMPlugin extends Plugin {
                 }
                 break;
             case DEPOSIT_ALL:
-                amountOfSand = 0;
-                amountOfSeaweed = 0;
             case MAKE:
                 amountOfSand = 0;
                 amountOfSeaweed = 0;
                 break;
             default:
-                return;
         }
     }
 
