@@ -33,8 +33,6 @@ public class PreventSGMPlugin extends Plugin {
     private static final int WITHDRAW = 786445;
     private static final int DEPOSIT_ALL = 786476;
     private static final int DEPOSIT = 983043;
-    private static final int MAKE = 14286969;
-    // This number was found with the widget inspector
     private static final int SUPERGLASS_MAKE = 14286969;
 
     private static SuperGlassMakeFacade superglassmake = new SuperGlassMakeFacade(null);
@@ -50,8 +48,6 @@ public class PreventSGMPlugin extends Plugin {
 
     @Override
     protected void shutDown() throws Exception {
-        amountOfSand = 0;
-        amountOfSeaweed = 0;
         superglassmake.toggle(true);
     }
 
@@ -95,7 +91,7 @@ public class PreventSGMPlugin extends Plugin {
                 }
                 break;
             case DEPOSIT_ALL:
-            case MAKE:
+            case SUPERGLASS_MAKE:
                 amountOfSand = 0;
                 amountOfSeaweed = 0;
                 break;
