@@ -10,23 +10,16 @@ public class SuperGlassMakeFacade {
     }
 
     public void toggle(boolean check) {
-        if (superglassMake == null || superglassMake.isHidden()) return;
-        if (check) enable();
-        else disable();
+        if (superglassMake == null) {
+            return;
+        }
+        if (check) {
+            superglassMake.setOpacity(0);
+            superglassMake.setAction(0, "Superglass Make");
+        }
+        else {
+            superglassMake.setOpacity(128);
+            superglassMake.setAction(0, "");
+        }
     }
-
-    public void shutdown() {
-        enable();
-    }
-
-    private void enable() {
-        superglassMake.setOpacity(0);
-        superglassMake.setAction(0, "Superglass Make");
-    }
-
-    private void disable() {
-        superglassMake.setOpacity(128);
-        superglassMake.setAction(0, "");
-    }
-
 }

@@ -51,7 +51,7 @@ public class PreventSGMPlugin extends Plugin {
     protected void shutDown() throws Exception {
         amountOfSand = 0;
         amountOfSeaweed = 0;
-        superglassmake.shutdown();
+        superglassmake.toggle(true);
     }
 
     @Subscribe
