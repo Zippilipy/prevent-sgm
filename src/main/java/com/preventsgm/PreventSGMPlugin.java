@@ -13,6 +13,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.api.events.WidgetLoaded;
 
 import javax.inject.Inject;
 
@@ -59,6 +60,12 @@ public class PreventSGMPlugin extends Plugin {
         if (event.getPlayer().equals(client.getLocalPlayer())) {
             superglassmake = new SuperGlassMakeFacade(client.getWidget(SUPERGLASS_MAKE));
         }
+    }
+
+    @Subscribe
+    public void onWidgetLoaded(WidgetLoaded event) {
+        int id = event.getGroupId();
+        log.debug(String.valueOf(id));
     }
 
     @Subscribe
