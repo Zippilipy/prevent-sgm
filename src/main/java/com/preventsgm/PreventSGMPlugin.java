@@ -42,12 +42,6 @@ public class PreventSGMPlugin extends Plugin {
 
     @Override
     protected void startUp() throws Exception {
-        //This allows players to restart the plugin if it stops working to make it work again
-        if (client != null) {
-            superglassmake = new SuperGlassMakeFacade(client.getWidget(SUPERGLASS_MAKE));
-        }
-        amountOfSand = 0;
-        amountOfSeaweed = 0;
     }
 
     @Override
