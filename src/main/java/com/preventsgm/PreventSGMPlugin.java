@@ -56,11 +56,11 @@ public class PreventSGMPlugin extends Plugin {
     public void onPlayerSpawned(PlayerSpawned event) {
         if (event.getPlayer().equals(client.getLocalPlayer())) {
             superglassmake = new SuperGlassMakeFacade(client.getWidget(SUPERGLASS_MAKE));
+            Widget inventory = client.getWidget(ComponentID.INVENTORY_CONTAINER);
+            Widget[] items = inventory.getChildren();
+            amountOfSand = (int) Arrays.stream(items).filter(item -> item.getItemId() == ItemID.BUCKET_OF_SAND).count();
+            amountOfSeaweed = (int) Arrays.stream(items).filter(item -> item.getItemId() == ItemID.GIANT_SEAWEED).count();
         }
-        Widget inventory = client.getWidget(ComponentID.INVENTORY_CONTAINER);
-        Widget[] items = inventory.getChildren();
-        amountOfSand = (int) Arrays.stream(items).filter(item -> item.getItemId() == ItemID.BUCKET_OF_SAND).count();
-        amountOfSeaweed = (int) Arrays.stream(items).filter(item -> item.getItemId() == ItemID.GIANT_SEAWEED).count();
     }
 
     @Subscribe
