@@ -4,16 +4,15 @@ import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
-import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PlayerSpawned;
+import net.runelite.api.events.BeforeRender;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.api.events.WidgetLoaded;
 
 import javax.inject.Inject;
 import java.util.Arrays;
@@ -43,6 +42,10 @@ public class PreventSGMPlugin extends Plugin {
 
     @Override
     protected void startUp() throws Exception {
+        //This allows players to restart the plugin if it stops working to make it work again
+        if (client != null) {
+            superglassmake = new SuperGlassMakeFacade(client.getWidget(SUPERGLASS_MAKE));
+        }
         amountOfSand = 0;
         amountOfSeaweed = 0;
     }
@@ -61,12 +64,6 @@ public class PreventSGMPlugin extends Plugin {
             amountOfSand = (int) Arrays.stream(items).filter(item -> item.getItemId() == ItemID.BUCKET_OF_SAND).count();
             amountOfSeaweed = (int) Arrays.stream(items).filter(item -> item.getItemId() == ItemID.GIANT_SEAWEED).count();
         }
-    }
-
-    @Subscribe
-    public void onWidgetLoaded(WidgetLoaded event) {
-        int id = event.getGroupId();
-        log.debug(String.valueOf(id));
     }
 
     @Subscribe
