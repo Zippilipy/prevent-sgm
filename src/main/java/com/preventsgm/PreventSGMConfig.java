@@ -32,4 +32,13 @@ public interface PreventSGMConfig extends Config {
     default int sand() {
         return 18;
     }
+
+    @ConfigItem(
+            keyName = "disableWithdraw",
+            name = "Disable withdraw given condition",
+            description = "Disables the withdraw button on sand and seaweed if you have the given amount of sand and seaweed"
+    )
+    default boolean disableWithdraw() {
+        return true;
+    }
 }

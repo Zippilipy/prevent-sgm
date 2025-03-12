@@ -77,6 +77,15 @@ public class PreventSGMPlugin extends Plugin {
     public void onMenuOptionClicked(MenuOptionClicked event) {
         switch (event.getParam1()) {
             case WITHDRAW:
+                if (config.disableWithdraw()) {
+                    if (amountOfSand == config.sand() && event.getItemId() == ItemID.BUCKET_OF_SAND) {
+                        event.consume();
+                        return;
+                    } else if (amountOfSeaweed == config.seaweed() && event.getItemId() == ItemID.GIANT_SEAWEED) {
+                        event.consume();
+                        return;
+                    }
+                }
                 updateInventory(event.getItemId());
                 break;
             case DEPOSIT:
