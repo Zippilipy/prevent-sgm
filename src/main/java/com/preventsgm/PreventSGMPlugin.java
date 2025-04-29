@@ -4,7 +4,7 @@ import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PlayerSpawned;
@@ -69,7 +69,7 @@ public class PreventSGMPlugin extends Plugin {
             sinisteroffering = new SpellFacade(client.getWidget(SINISTER_OFFERING), "Cast");
             Widget inventory = client.getWidget(ComponentID.INVENTORY_CONTAINER);
             Widget[] items = inventory.getChildren();
-            amountOfSand = (int) Arrays.stream(items).filter(item -> item.getItemId() == ItemID.BUCKET_OF_SAND).count();
+            amountOfSand = (int) Arrays.stream(items).filter(item -> item.getItemId() == ItemID.BUCKET_SAND).count();
             amountOfSeaweed = (int) Arrays.stream(items).filter(item -> item.getItemId() == ItemID.GIANT_SEAWEED).count();
             int amountBones = (int) Arrays.stream(items).filter(item -> isSinisterBone(item.getItemId())).count();
             int amountAshes = (int) Arrays.stream(items).filter(item -> isDemonicAsh(item.getItemId())).count();
@@ -102,7 +102,13 @@ public class PreventSGMPlugin extends Plugin {
 
     @Subscribe
     public void onConfigChanged(ConfigChanged event) {
+        if (client == null) {
+            return;
+        }
         Widget inventory = client.getWidget(ComponentID.INVENTORY_CONTAINER);
+        if (inventory == null) {
+            return;
+        }
         Widget[] items = inventory.getChildren();
         int amountBones = (int) Arrays.stream(items).filter(item -> isSinisterBone(item.getItemId())).count();
         int amountAshes = (int) Arrays.stream(items).filter(item -> isDemonicAsh(item.getItemId())).count();
@@ -123,7 +129,7 @@ public class PreventSGMPlugin extends Plugin {
         switch (event.getParam1()) {
             case WITHDRAW:
                 if (config.disableWithdraw()) {
-                    if (amountOfSand == config.sand() && event.getItemId() == ItemID.BUCKET_OF_SAND) {
+                    if (amountOfSand == config.sand() && event.getItemId() == ItemID.BUCKET_SAND) {
                         event.consume();
                         return;
                     } else if (amountOfSeaweed == config.seaweed() && event.getItemId() == ItemID.GIANT_SEAWEED) {
@@ -136,7 +142,7 @@ public class PreventSGMPlugin extends Plugin {
             case DEPOSIT:
                 if (event.getItemId() == ItemID.GIANT_SEAWEED) {
                     amountOfSeaweed -= 1;
-                } else if (event.getItemId() == ItemID.BUCKET_OF_SAND) {
+                } else if (event.getItemId() == ItemID.BUCKET_SAND) {
                     amountOfSand = 0;
                 }
                 break;
@@ -156,7 +162,7 @@ public class PreventSGMPlugin extends Plugin {
         }
         if (itemID == ItemID.GIANT_SEAWEED) {
             amountOfSeaweed += 1;
-        } else if (itemID == ItemID.BUCKET_OF_SAND) {
+        } else if (itemID == ItemID.BUCKET_SAND) {
             amountOfSand += config.sand();
         }
     }
@@ -168,24 +174,24 @@ public class PreventSGMPlugin extends Plugin {
     private boolean isSinisterBone(int id) {
         switch (id) {
             case ItemID.BONES:
-            case ItemID.MONKEY_BONES:
+            case ItemID.MM_NORMAL_MONKEY_BONES:
             case ItemID.BAT_BONES:
-            case ItemID.SUPERIOR_DRAGON_BONES:
-            case ItemID.OURG_BONES:
-            case ItemID.DAGANNOTH_BONES:
+            case ItemID.DRAGON_BONES_SUPERIOR:
+            case ItemID.ZOGRE_ANCESTRAL_BONES_OURG:
+            case ItemID.DAGANNOTH_KING_BONES:
             case ItemID.HYDRA_BONES:
-            case ItemID.RAURG_BONES:
+            case ItemID.ZOGRE_ANCESTRAL_BONES_RAURG:
             case ItemID.LAVA_DRAGON_BONES:
-            case ItemID.FAYRG_BONES:
+            case ItemID.ZOGRE_ANCESTRAL_BONES_FAYG:
             case ItemID.DRAKE_BONES:
             case ItemID.WYVERN_BONES:
             case ItemID.DRAGON_BONES:
             case ItemID.WYRM_BONES:
             case ItemID.BABYDRAGON_BONES:
-            case ItemID.SHAIKAHAN_BONES:
+            case ItemID.TBWT_BEAST_BONES:
             case ItemID.ZOGRE_BONES:
-            case ItemID.WYRMLING_BONES:
-            case ItemID.JOGRE_BONES:
+            case ItemID.BABYWYRM_BONES:
+            case ItemID.TBWT_JOGRE_BONES:
             case ItemID.BIG_BONES:
                 return true;
         }
