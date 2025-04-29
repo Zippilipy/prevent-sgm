@@ -3,7 +3,9 @@ package com.preventsgm;
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Item;
 import net.runelite.api.ItemID;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.BeforeRender;
@@ -11,6 +13,7 @@ import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -19,9 +22,9 @@ import java.util.Arrays;
 
 @Slf4j
 @PluginDescriptor(
-        name = "Prevent Superglass Make",
-        description = "Prevents casting superglass make if you do not "
-                + "have exactly 18 buckets of sand and 3 giant seaweed.")
+        name = "Prevent Misclicks",
+        description = "Prevents certain missclicks in spellbooks, such as superglass make if you don't "
+                + "have exactly 18 buckets of sand and 3 giant seaweed. Formerly known as 'Prevent superglass make'")
 public class PreventSGMPlugin extends Plugin {
     @Inject
     private Client client;
@@ -34,11 +37,18 @@ public class PreventSGMPlugin extends Plugin {
     private static final int DEPOSIT_ALL = 786476;
     private static final int DEPOSIT = 983043;
     private static final int SUPERGLASS_MAKE = 14286969;
+    private static final int DEMONIC_OFFERING = 14287025;
+    private static final int SINISTER_OFFERING = 14287026;
 
-    private static SuperGlassMakeFacade superglassmake = new SuperGlassMakeFacade(null);
+    private static SpellFacade superglassmake = new SpellFacade(null, "Cast");
+    private static SpellFacade demonicoffering = new SpellFacade(null, "Cast");
+    private static SpellFacade sinisteroffering = new SpellFacade(null, "Cast");
+
 
     private int amountOfSeaweed = 0;
     private int amountOfSand = 0;
+    private boolean sinister = false;
+    private boolean demonic = false;
 
     @Override
     protected void startUp() throws Exception {
@@ -47,22 +57,57 @@ public class PreventSGMPlugin extends Plugin {
     @Override
     protected void shutDown() throws Exception {
         superglassmake.toggle(true);
+        demonicoffering.toggle(true);
+        sinisteroffering.toggle(true);
     }
 
     @Subscribe
     public void onPlayerSpawned(PlayerSpawned event) {
         if (event.getPlayer().equals(client.getLocalPlayer())) {
-            superglassmake = new SuperGlassMakeFacade(client.getWidget(SUPERGLASS_MAKE));
+            superglassmake = new SpellFacade(client.getWidget(SUPERGLASS_MAKE), "Cast");
+            demonicoffering = new SpellFacade(client.getWidget(DEMONIC_OFFERING), "Cast");
+            sinisteroffering = new SpellFacade(client.getWidget(SINISTER_OFFERING), "Cast");
             Widget inventory = client.getWidget(ComponentID.INVENTORY_CONTAINER);
             Widget[] items = inventory.getChildren();
             amountOfSand = (int) Arrays.stream(items).filter(item -> item.getItemId() == ItemID.BUCKET_OF_SAND).count();
             amountOfSeaweed = (int) Arrays.stream(items).filter(item -> item.getItemId() == ItemID.GIANT_SEAWEED).count();
+            int amountBones = (int) Arrays.stream(items).filter(item -> isSinisterBone(item.getItemId())).count();
+            int amountAshes = (int) Arrays.stream(items).filter(item -> isDemonicAsh(item.getItemId())).count();
+            demonic = amountAshes >= config.demonic();
+            sinister = amountBones >= config.sinister();
         }
     }
 
     @Subscribe
     public void onBeforeRender(BeforeRender event) {
-        superglassmake.toggle(checkInventory());
+        if (config.seaweedToggle()) {
+            superglassmake.toggle(checkSeaweedAndSand());
+        }
+        if (config.demonicToggle()) {
+            demonicoffering.toggle(demonic);
+        }
+        if (config.sinisterToggle()) {
+            sinisteroffering.toggle(sinister);
+        }
+    }
+
+    @Subscribe
+    public void onItemContainerChanged(ItemContainerChanged event) {
+        int inventoryContainerId = 93;
+        if (event.getContainerId() == inventoryContainerId) {
+            Item[] items = event.getItemContainer().getItems();
+            updateBonesAndAshes(items);
+        }
+    }
+
+    @Subscribe
+    public void onConfigChanged(ConfigChanged event) {
+        Widget inventory = client.getWidget(ComponentID.INVENTORY_CONTAINER);
+        Widget[] items = inventory.getChildren();
+        int amountBones = (int) Arrays.stream(items).filter(item -> isSinisterBone(item.getItemId())).count();
+        int amountAshes = (int) Arrays.stream(items).filter(item -> isDemonicAsh(item.getItemId())).count();
+        demonic = amountAshes >= config.demonic();
+        sinister = amountBones >= config.sinister();
     }
 
     /*
@@ -116,8 +161,54 @@ public class PreventSGMPlugin extends Plugin {
         }
     }
 
-    private boolean checkInventory() {
+    private boolean checkSeaweedAndSand() {
         return amountOfSeaweed == config.seaweed() && amountOfSand == config.sand();
+    }
+
+    private boolean isSinisterBone(int id) {
+        switch (id) {
+            case ItemID.BONES:
+            case ItemID.MONKEY_BONES:
+            case ItemID.BAT_BONES:
+            case ItemID.SUPERIOR_DRAGON_BONES:
+            case ItemID.OURG_BONES:
+            case ItemID.DAGANNOTH_BONES:
+            case ItemID.HYDRA_BONES:
+            case ItemID.RAURG_BONES:
+            case ItemID.LAVA_DRAGON_BONES:
+            case ItemID.FAYRG_BONES:
+            case ItemID.DRAKE_BONES:
+            case ItemID.WYVERN_BONES:
+            case ItemID.DRAGON_BONES:
+            case ItemID.WYRM_BONES:
+            case ItemID.BABYDRAGON_BONES:
+            case ItemID.SHAIKAHAN_BONES:
+            case ItemID.ZOGRE_BONES:
+            case ItemID.WYRMLING_BONES:
+            case ItemID.JOGRE_BONES:
+            case ItemID.BIG_BONES:
+                return true;
+        }
+        return false;
+    }
+
+    private boolean isDemonicAsh(int id) {
+        switch (id) {
+            case ItemID.FIENDISH_ASHES:
+            case ItemID.VILE_ASHES:
+            case ItemID.MALICIOUS_ASHES:
+            case ItemID.ABYSSAL_ASHES:
+            case ItemID.INFERNAL_ASHES:
+                return true;
+        }
+        return false;
+    }
+
+    private void updateBonesAndAshes(Item[] items) {
+        int amountOfBones = (int) Arrays.stream(items).filter(item -> isSinisterBone(item.getId())).count();
+        int amountOfAshes = (int) Arrays.stream(items).filter(item -> isDemonicAsh(item.getId())).count();
+        sinister = amountOfBones >= config.sinister();
+        demonic = amountOfAshes >= config.demonic();
     }
 
     @Provides
