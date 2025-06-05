@@ -132,12 +132,14 @@ public class PreventSGMPlugin extends Plugin {
                     return;
                 }
                 Widget[] items = inventory.getChildren();
-                Widget[] inventoryFiltered = Arrays.stream(items).filter(item -> item.getItemId() == ItemID.SULPHUROUS_ESSENCE).toArray(Widget[]::new);
+                Widget[] inventoryFiltered = Arrays.stream(items).filter(item -> item.getItemId() == ItemID.SWAMP_TAR).toArray(Widget[]::new);
                 int amountSulphurAsh = inventoryFiltered[0].getItemQuantity();
                 if (amountSulphurAsh >= config.sulphurAmountToggle()) {
                     //I haven't figured out a good way to detect if someone is trying to teleport, so this will have to do
                     boolean specialCases = itemIsTeleportItem(event.getItemId()) && !event.getMenuOption().equals("Wear");
-                    specialCases = specialCases || event.getParam1() == WEARABLE_TELEPORT && !event.getMenuOption().equals("Remove");
+                    if (event.getItemId() == -1) {
+                        specialCases = specialCases || event.getParam1() == WEARABLE_TELEPORT && !event.getMenuOption().equals("Remove");
+                    }
                     if (specialCases || event.getMenuOption().contains("Teleport") || event.getMenuTarget().contains("Teleport")) {
                         event.consume();
                         client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Teleporting disabled since you have " + amountSulphurAsh + " sulphurous essence in your inventory!", null);
