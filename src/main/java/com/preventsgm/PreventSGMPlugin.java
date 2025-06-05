@@ -132,7 +132,7 @@ public class PreventSGMPlugin extends Plugin {
                     return;
                 }
                 Widget[] items = inventory.getChildren();
-                Widget[] inventoryFiltered = Arrays.stream(items).filter(item -> item.getItemId() == ItemID.SWAMP_TAR).toArray(Widget[]::new);
+                Widget[] inventoryFiltered = Arrays.stream(items).filter(item -> item.getItemId() == ItemID.SULPHUROUS_ESSENCE).toArray(Widget[]::new);
                 int amountSulphurAsh = inventoryFiltered[0].getItemQuantity();
                 if (amountSulphurAsh >= config.sulphurAmountToggle()) {
                     //I haven't figured out a good way to detect if someone is trying to teleport, so this will have to do
