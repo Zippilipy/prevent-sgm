@@ -18,6 +18,13 @@ public interface PreventSGMConfig extends Config {
     )
     String offeringSection = "Offerings";
 
+    @ConfigSection(
+            name = "Sulphur",
+            description = "Toggles for behaviour of sulphur essence",
+            position = 2
+    )
+    String sulphurSection = "Sulphur";
+
     @ConfigItem(
             keyName = "seaweedToggle",
             name = "Disable superglass",
@@ -121,5 +128,32 @@ public interface PreventSGMConfig extends Config {
     )
     default int sinister() {
         return 3;
+    }
+
+    @ConfigItem(
+            keyName = "sulphurTeleportToggle",
+            name = "Disable teleports",
+            description = "Disables teleport items/spells if you have sulphur essence in your inventory",
+            section = sulphurSection,
+            position = 0
+
+    )
+    default boolean sulphurTeleportToggle() {
+        return true;
+    }
+
+    @ConfigItem(
+            keyName = "sulphurAmountToggle",
+            name = "Amount of sulphur essence",
+            description = "At how many essences should teleports be disabled?",
+            section = sulphurSection,
+            position = 1
+
+    )
+    @Range(
+            min = 1
+    )
+    default int sulphurAmountToggle() {
+        return 1;
     }
 }

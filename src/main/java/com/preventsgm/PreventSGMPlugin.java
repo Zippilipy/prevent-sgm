@@ -2,13 +2,11 @@ package com.preventsgm;
 
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
+import net.runelite.api.events.*;
 import net.runelite.api.gameval.ItemID;
-import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.PlayerSpawned;
-import net.runelite.api.events.BeforeRender;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
@@ -19,6 +17,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 
 import javax.inject.Inject;
 import java.util.Arrays;
+
+import static com.preventsgm.IsTeleportItem.itemIsTeleportItem;
 
 @Slf4j
 @PluginDescriptor(
@@ -39,6 +39,7 @@ public class PreventSGMPlugin extends Plugin {
     private static final int SUPERGLASS_MAKE = 14286969;
     private static final int DEMONIC_OFFERING = 14287025;
     private static final int SINISTER_OFFERING = 14287026;
+    private static final int WEARABLE_TELEPORT = 25362449;
 
     private int amountOfSeaweed = 0;
     private int amountOfSand = 0;
@@ -113,7 +114,6 @@ public class PreventSGMPlugin extends Plugin {
         demonic = amountAshes >= config.demonic();
         sinister = amountBones >= config.sinister();
     }
-
     /*
      * This is a pretty silly way of doing this, but
      * onMenuOptionClicked gives the fastest response
@@ -124,6 +124,27 @@ public class PreventSGMPlugin extends Plugin {
      */
     @Subscribe
     public void onMenuOptionClicked(MenuOptionClicked event) {
+        if (config.sulphurTeleportToggle()) {
+            if (client == null) {
+            } else {
+                Widget inventory = client.getWidget(ComponentID.INVENTORY_CONTAINER);
+                if (inventory == null) {
+                    return;
+                }
+                Widget[] items = inventory.getChildren();
+                Widget[] inventoryFiltered = Arrays.stream(items).filter(item -> item.getItemId() == ItemID.SULPHUROUS_ESSENCE).toArray(Widget[]::new);
+                int amountSulphurAsh = inventoryFiltered[0].getItemQuantity();
+                if (amountSulphurAsh >= config.sulphurAmountToggle()) {
+                    //I haven't figured out a good way to detect if someone is trying to teleport, so this will have to do
+                    boolean specialCases = itemIsTeleportItem(event.getItemId()) && !event.getMenuOption().equals("Wear");
+                    specialCases = specialCases || event.getParam1() == WEARABLE_TELEPORT && !event.getMenuOption().equals("Remove");
+                    if (specialCases || event.getMenuOption().contains("Teleport") || event.getMenuTarget().contains("Teleport")) {
+                        event.consume();
+                        client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Teleporting disabled since you have " + amountSulphurAsh + " sulphurous essence in your inventory!", null);
+                    }
+                }
+            }
+        }
         switch (event.getParam1()) {
             case WITHDRAW:
                 if (config.disableWithdraw()) {

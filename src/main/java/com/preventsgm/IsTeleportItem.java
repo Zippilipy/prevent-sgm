@@ -1,0 +1,182 @@
+package com.preventsgm;
+
+import net.runelite.api.gameval.ItemID;
+
+public class IsTeleportItem {
+
+    /**
+     *
+     * Sigh... I have no clue how to otherwise determine the player is trying to teleport if it doesn't say in the item's name or menu action "Teleport"
+     * @param itemID the items id
+     * @return true if it's an item you use to teleport, otherwise false
+     */
+    public static boolean itemIsTeleportItem (int itemID) {
+        switch (itemID) {
+            case ItemID.SKILLCAPE_AD_HOOD:
+            case ItemID.AMULET_OF_GLORY_INF:
+            case ItemID.AMULET_OF_GLORY_6:
+            case ItemID.AMULET_OF_GLORY_5:
+            case ItemID.AMULET_OF_GLORY_4:
+            case ItemID.AMULET_OF_GLORY_3:
+            case ItemID.AMULET_OF_GLORY_2:
+            case ItemID.AMULET_OF_GLORY_1:
+            case ItemID.TRAIL_AMULET_OF_GLORY_6:
+            case ItemID.TRAIL_AMULET_OF_GLORY_5:
+            case ItemID.TRAIL_AMULET_OF_GLORY_4:
+            case ItemID.TRAIL_AMULET_OF_GLORY_3:
+            case ItemID.TRAIL_AMULET_OF_GLORY_2:
+            case ItemID.TRAIL_AMULET_OF_GLORY_1:
+            case ItemID.TELETAB_LUMBRIDGE :
+            case ItemID.ARDY_CAPE_EASY:
+            case ItemID.ARDY_CAPE_MEDIUM:
+            case ItemID.ARDY_CAPE_HARD:
+            case ItemID.ARDY_CAPE_ELITE:
+            case ItemID.SKILLCAPE_MAX:
+            case ItemID.HG_QUETZALWHISTLE_BASIC:
+            case ItemID.HG_QUETZALWHISTLE_ENHANCED:
+            case ItemID.HG_QUETZALWHISTLE_PERFECTED:
+            case ItemID.BOOK_OF_THE_DEAD:
+            case ItemID.BURNING_AMULET_5:
+            case ItemID.BURNING_AMULET_4:
+            case ItemID.BURNING_AMULET_3:
+            case ItemID.BURNING_AMULET_2:
+            case ItemID.BURNING_AMULET_1:
+            case ItemID.VARLAMORE_MINING_TELEPORT:
+            case ItemID.VARLAMORE_MINING_TELEPORT_1:
+            case ItemID.VARLAMORE_MINING_TELEPORT_2:
+            case ItemID.VARLAMORE_MINING_TELEPORT_3:
+            case ItemID.VARLAMORE_MINING_TELEPORT_4:
+            case ItemID.VARLAMORE_MINING_TELEPORT_5:
+            case ItemID.VARLAMORE_MINING_TELEPORT_25:
+            case ItemID.CAMULET:
+            case ItemID.CHRONICLE:
+            case ItemID.JEWL_BRACELET_OF_COMBAT_6:
+            case ItemID.JEWL_BRACELET_OF_COMBAT_5:
+            case ItemID.JEWL_BRACELET_OF_COMBAT_4:
+            case ItemID.JEWL_BRACELET_OF_COMBAT_3:
+            case ItemID.JEWL_BRACELET_OF_COMBAT_2:
+            case ItemID.JEWL_BRACELET_OF_COMBAT_1:
+            case ItemID.SKILLCAPE_CONSTRUCTION:
+            case ItemID.SKILLCAPE_CRAFTING:
+            case ItemID.SKILLCAPE_FARMING:
+            case ItemID.PRIF_TELEPORT_CRYSTAL:
+            case ItemID.DESERT_AMULET_EASY:
+            case ItemID.DESERT_AMULET_MEDIUM:
+            case ItemID.DESERT_AMULET_HARD:
+            case ItemID.DESERT_AMULET_ELITE:
+            case ItemID.NECKLACE_OF_DIGSITE_5:
+            case ItemID.NECKLACE_OF_DIGSITE_4:
+            case ItemID.NECKLACE_OF_DIGSITE_3:
+            case ItemID.NECKLACE_OF_DIGSITE_2:
+            case ItemID.NECKLACE_OF_DIGSITE_1:
+            case ItemID.DORGESH_TELEPORT_ARTIFACT:
+            case ItemID.DRAKANS_MEDALLION:
+            case ItemID.ECTOPHIAL:
+            case ItemID.MAGIC_STRUNG_LYRE_INFINITE:
+            case ItemID.MAGIC_STRUNG_LYRE_5:
+            case ItemID.MAGIC_STRUNG_LYRE_4:
+            case ItemID.MAGIC_STRUNG_LYRE_3:
+            case ItemID.MAGIC_STRUNG_LYRE_2:
+            case ItemID.MAGIC_STRUNG_LYRE:
+            case ItemID.LUMBRIDGE_RING_EASY:
+            case ItemID.LUMBRIDGE_RING_MEDIUM:
+            case ItemID.LUMBRIDGE_RING_HARD:
+            case ItemID.LUMBRIDGE_RING_ELITE:
+            case ItemID.SKILLCAPE_FISHING:
+            case ItemID.FREMENNIK_BOOTS_EASY:
+            case ItemID.FREMENNIK_BOOTS_MEDIUM:
+            case ItemID.FREMENNIK_BOOTS_HARD:
+            case ItemID.FREMENNIK_BOOTS_ELITE:
+            case ItemID.NECKLACE_OF_MINIGAMES_8:
+            case ItemID.NECKLACE_OF_MINIGAMES_7:
+            case ItemID.NECKLACE_OF_MINIGAMES_6:
+            case ItemID.NECKLACE_OF_MINIGAMES_5:
+            case ItemID.NECKLACE_OF_MINIGAMES_4:
+            case ItemID.NECKLACE_OF_MINIGAMES_3:
+            case ItemID.NECKLACE_OF_MINIGAMES_2:
+            case ItemID.NECKLACE_OF_MINIGAMES_1:
+            case ItemID.CA_OFFHAND_EASY:
+            case ItemID.CA_OFFHAND_MEDIUM:
+            case ItemID.CA_OFFHAND_HARD:
+            case ItemID.CA_OFFHAND_ELITE:
+            case ItemID.CA_OFFHAND_MASTER:
+            case ItemID.CA_OFFHAND_GRANDMASTER:
+            case ItemID.GIANTSOUL_AMULET_CHARGED:
+            case ItemID.ALUFT_SEED_POD:
+            case ItemID.MM2_ROYAL_SEED_POD:
+            case ItemID.HALLOWED_TELEPORT:
+            case ItemID.SKILLCAPE_HUNTING:
+            case ItemID.WEISS_TELEPORT_BASALT:
+            case ItemID.SEERS_HEADBAND_EASY:
+            case ItemID.SEERS_HEADBAND_MEDIUM:
+            case ItemID.SEERS_HEADBAND_HARD:
+            case ItemID.SEERS_HEADBAND_ELITE:
+            case ItemID.ATJUN_GLOVES_EASY:
+            case ItemID.ATJUN_GLOVES_MED:
+            case ItemID.ATJUN_GLOVES_HARD:
+            case ItemID.ATJUN_GLOVES_ELITE:
+            case ItemID.MAGIC_WHISTLE:
+            case ItemID.BOOKOFSCROLLS_CHARGED:
+            case ItemID.MORYTANIA_LEGS_EASY:
+            case ItemID.MORYTANIA_LEGS_MEDIUM:
+            case ItemID.MORYTANIA_LEGS_HARD:
+            case ItemID.MORYTANIA_LEGS_ELITE:
+            case ItemID.MUSIC_CAPE:
+            case ItemID.MYTHICAL_CAPE:
+            case ItemID.PENDANT_OF_ATES:
+            case ItemID.PHARAOHS_SCEPTRE:
+            case ItemID.SKILLCAPE_QP:
+            case ItemID.ZEAH_BLESSING_EASY:
+            case ItemID.ZEAH_BLESSING_MEDIUM:
+            case ItemID.ZEAH_BLESSING_HARD:
+            case ItemID.ZEAH_BLESSING_ELITE:
+            case ItemID.RING_OF_DUELING_8:
+            case ItemID.RING_OF_DUELING_7:
+            case ItemID.RING_OF_DUELING_6:
+            case ItemID.RING_OF_DUELING_5:
+            case ItemID.RING_OF_DUELING_4:
+            case ItemID.RING_OF_DUELING_3:
+            case ItemID.RING_OF_DUELING_2:
+            case ItemID.RING_OF_DUELING_1:
+            case ItemID.RING_OF_LIFE:
+            case ItemID.RING_OF_RETURNING_5:
+            case ItemID.RING_OF_RETURNING_4:
+            case ItemID.RING_OF_RETURNING_3:
+            case ItemID.RING_OF_RETURNING_2:
+            case ItemID.RING_OF_RETURNING_1:
+            case ItemID.RING_OF_ELEMENTS:
+            case ItemID.RING_OF_WEALTH:
+            case ItemID.RING_OF_WEALTH_I:
+            case ItemID.JEWL_NECKLACE_OF_SKILLS_6:
+            case ItemID.JEWL_NECKLACE_OF_SKILLS_5:
+            case ItemID.JEWL_NECKLACE_OF_SKILLS_4:
+            case ItemID.JEWL_NECKLACE_OF_SKILLS_3:
+            case ItemID.JEWL_NECKLACE_OF_SKILLS_2:
+            case ItemID.JEWL_NECKLACE_OF_SKILLS_1:
+            case ItemID.SOS_SKULL_SCEPTRE_IMBUED:
+            case ItemID.SOS_SKULL_SCEPTRE:
+            case ItemID.SLAYER_RING_8:
+            case ItemID.SLAYER_RING_7:
+            case ItemID.SLAYER_RING_6:
+            case ItemID.SLAYER_RING_5:
+            case ItemID.SLAYER_RING_4:
+            case ItemID.SLAYER_RING_3:
+            case ItemID.SLAYER_RING_2:
+            case ItemID.SLAYER_RING_1:
+            case ItemID.SLAYER_RING_ETERNAL:
+            case ItemID.STRONGHOLD_TELEPORT_BASALT:
+            case ItemID.SKILLCAPE_STRENGTH:
+            case ItemID.WESTERN_BANNER_EASY:
+            case ItemID.WESTERN_BANNER_MEDIUM:
+            case ItemID.WESTERN_BANNER_HARD:
+            case ItemID.WESTERN_BANNER_ELITE:
+            case ItemID.WILDERNESS_SWORD_EASY:
+            case ItemID.WILDERNESS_SWORD_MEDIUM:
+            case ItemID.WILDERNESS_SWORD_HARD:
+            case ItemID.WILDERNESS_SWORD_ELITE:
+            case ItemID.XERIC_TALISMAN:
+                return true;
+        }
+        return false;
+    }
+}
