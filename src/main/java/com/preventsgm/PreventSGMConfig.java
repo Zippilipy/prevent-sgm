@@ -19,7 +19,7 @@ public interface PreventSGMConfig extends Config {
     String offeringSection = "Offerings";
 
     @ConfigSection(
-            name = "Sulphur",
+            name = "Sulphurous essence",
             description = "Toggles for behaviour of sulphur essence",
             position = 2
     )
