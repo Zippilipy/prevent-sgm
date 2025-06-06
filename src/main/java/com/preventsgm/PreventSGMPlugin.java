@@ -142,7 +142,7 @@ public class PreventSGMPlugin extends Plugin {
                     }
                     if (specialCases || event.getMenuOption().contains("Teleport") || event.getMenuTarget().contains("Teleport")) {
                         event.consume();
-                        client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Teleporting disabled since you have " + amountSulphurAsh + " sulphurous essence in your inventory!", null);
+                        client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "[Prevent Misclicks] Teleporting disabled since you have " + amountSulphurAsh + " sulphurous essence in your inventory!", null);
                     }
                 }
             }
