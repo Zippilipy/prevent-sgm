@@ -18,6 +18,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import javax.inject.Inject;
 import java.util.Arrays;
 
+import static com.preventsgm.IsTeleportItem.isWearableParam1;
 import static com.preventsgm.IsTeleportItem.itemIsTeleportItem;
 
 @Slf4j
@@ -132,13 +133,19 @@ public class PreventSGMPlugin extends Plugin {
                     return;
                 }
                 Widget[] items = inventory.getChildren();
+                if (items == null) {
+                    return;
+                }
                 Widget[] inventoryFiltered = Arrays.stream(items).filter(item -> item.getItemId() == ItemID.SULPHUROUS_ESSENCE).toArray(Widget[]::new);
                 int amountSulphurAsh = inventoryFiltered[0].getItemQuantity();
                 if (amountSulphurAsh >= config.sulphurAmountToggle()) {
                     //I haven't figured out a good way to detect if someone is trying to teleport, so this will have to do
-                    boolean specialCases = itemIsTeleportItem(event.getItemId()) && !event.getMenuOption().equals("Wear");
+                    String menu = event.getMenuOption();
+                    boolean specialCases = itemIsTeleportItem(event.getItemId()) && !menu.equals("Wear") && !menu.equals("Equip");
+                    specialCases = specialCases && !menu.equals("Drop") && !menu.equals("Remove") && !menu.equals("Examine") && !menu.equals("Check");
+                    specialCases = specialCases && !menu.equals("Use") && !menu.equals("Take") && !menu.equals("Trim");
                     if (event.getItemId() == -1) {
-                        specialCases = specialCases || event.getParam1() == WEARABLE_TELEPORT && !event.getMenuOption().equals("Remove");
+                        specialCases = specialCases || isWearableParam1(event.getParam1()) && !menu.equals("Remove") && !menu.equals("Examine") && !menu.equals("Check");
                     }
                     if (specialCases || event.getMenuOption().contains("Teleport") || event.getMenuTarget().contains("Teleport")) {
                         event.consume();

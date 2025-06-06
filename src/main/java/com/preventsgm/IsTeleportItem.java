@@ -4,6 +4,24 @@ import net.runelite.api.gameval.ItemID;
 
 public class IsTeleportItem {
 
+    public static boolean isWearableParam1 (int param1) {
+        switch (param1) {
+            case 25362447: //Helmet
+            case 25362448: //Cape
+            case 25362457: //Pocket slot
+            case 25362456: //Ring
+            case 25362449: //Necklace
+            case 25362455: //Boots
+            case 25362452: //Off hand
+            case 25362450: //Main hand
+            case 25362454: //Gloves
+            case 25362451: //Chest plate
+            case 25362453: //legs
+                return true;
+        }
+        return false;
+    }
+
     /**
      *
      * Sigh... I have no clue how to otherwise determine the player is trying to teleport if it doesn't say in the item's name or menu action "Teleport"
