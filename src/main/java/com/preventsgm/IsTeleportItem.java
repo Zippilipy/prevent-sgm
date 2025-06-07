@@ -2,6 +2,10 @@ package com.preventsgm;
 
 import net.runelite.api.gameval.ItemID;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 public class IsTeleportItem {
 
     public static boolean isWearableParam1 (int param1) {
@@ -22,6 +26,334 @@ public class IsTeleportItem {
         return false;
     }
 
+    private static final Set<Integer> TELEPORT_ITEM_IDS = new HashSet<>(Arrays.asList(
+            //Automatically found
+            ItemID.ALUFT_SEED_POD,
+            ItemID.AMULET_OF_GLORY_1,
+            ItemID.AMULET_OF_GLORY_2,
+            ItemID.AMULET_OF_GLORY_3,
+            ItemID.AMULET_OF_GLORY_4,
+            ItemID.AMULET_OF_GLORY_5,
+            ItemID.AMULET_OF_GLORY_6,
+            ItemID.AMULET_OF_GLORY_INF,
+            ItemID.ARDY_CAPE_EASY,
+            ItemID.ARDY_CAPE_ELITE,
+            ItemID.ARDY_CAPE_HARD,
+            ItemID.ARDY_CAPE_MEDIUM,
+            ItemID.ATJUN_GLOVES_ELITE,
+            ItemID.ATJUN_GLOVES_HARD,
+            ItemID.BOOKOFSCROLLS_CHARGED,
+            ItemID.BOOK_OF_THE_DEAD,
+            ItemID.BR_AMULET_OF_GLORY,
+            ItemID.BURNING_AMULET_1,
+            ItemID.BURNING_AMULET_2,
+            ItemID.BURNING_AMULET_3,
+            ItemID.BURNING_AMULET_4,
+            ItemID.BURNING_AMULET_5,
+            ItemID.CAMULET,
+            ItemID.CA_OFFHAND_EASY,
+            ItemID.CA_OFFHAND_ELITE,
+            ItemID.CA_OFFHAND_GRANDMASTER,
+            ItemID.CA_OFFHAND_HARD,
+            ItemID.CA_OFFHAND_MASTER,
+            ItemID.CA_OFFHAND_MEDIUM,
+            ItemID.CHRONICLE,
+            ItemID.DEADMAN_TOURNAMENT_TELETAB,
+            ItemID.DESERT_AMULET_ELITE,
+            ItemID.DESERT_AMULET_HARD,
+            ItemID.DESERT_AMULET_MEDIUM,
+            ItemID.DISCOFRETURNING,
+            ItemID.DORGESH_TELEPORT_ARTIFACT,
+            ItemID.DRAKANS_MEDALLION,
+            ItemID.ECTOPHIAL_EMPTY,
+            ItemID.ELF_CRYSTAL_TINY,
+            ItemID.FOSSIL_TABLET_VOLCANOTELEPORT,
+            ItemID.FREMENNIK_BOOTS_EASY,
+            ItemID.FREMENNIK_BOOTS_ELITE,
+            ItemID.FREMENNIK_BOOTS_HARD,
+            ItemID.FREMENNIK_BOOTS_MEDIUM,
+            ItemID.GAUNTLET_TELEPORT_CRYSTAL,
+            ItemID.GIANTSOUL_AMULET_CHARGED,
+            ItemID.HALLOWED_TELEPORT,
+            ItemID.HG_QUETZALWHISTLE_BASIC,
+            ItemID.HG_QUETZALWHISTLE_ENHANCED,
+            ItemID.HG_QUETZALWHISTLE_PERFECTED,
+            ItemID.INFERNAL_DEFENDER_GHOMMAL_5,
+            ItemID.INFERNAL_DEFENDER_GHOMMAL_6,
+            ItemID.JEWL_BRACELET_OF_COMBAT,
+            ItemID.JEWL_BRACELET_OF_COMBAT_1,
+            ItemID.JEWL_BRACELET_OF_COMBAT_2,
+            ItemID.JEWL_BRACELET_OF_COMBAT_3,
+            ItemID.JEWL_BRACELET_OF_COMBAT_4,
+            ItemID.JEWL_BRACELET_OF_COMBAT_5,
+            ItemID.JEWL_BRACELET_OF_COMBAT_6,
+            ItemID.JEWL_NECKLACE_OF_SKILLS,
+            ItemID.JEWL_NECKLACE_OF_SKILLS_1,
+            ItemID.JEWL_NECKLACE_OF_SKILLS_2,
+            ItemID.JEWL_NECKLACE_OF_SKILLS_3,
+            ItemID.JEWL_NECKLACE_OF_SKILLS_4,
+            ItemID.JEWL_NECKLACE_OF_SKILLS_5,
+            ItemID.JEWL_NECKLACE_OF_SKILLS_6,
+            ItemID.LOTG_TELEPORT_ARTIFACT,
+            ItemID.LUMBRIDGE_RING_ELITE,
+            ItemID.LUMBRIDGE_RING_HARD,
+            ItemID.LUMBRIDGE_RING_MEDIUM,
+            ItemID.LUNAR_TABLET_BARBARIAN_TELEPORT,
+            ItemID.LUNAR_TABLET_CATHERBY_TELEPORT,
+            ItemID.LUNAR_TABLET_FISHING_GUILD_TELEPORT,
+            ItemID.LUNAR_TABLET_ICE_PLATEAU_TELEPORT,
+            ItemID.LUNAR_TABLET_KHAZARD_TELEPORT,
+            ItemID.LUNAR_TABLET_MOONCLAN_TELEPORT,
+            ItemID.LUNAR_TABLET_OURANIA_TELEPORT,
+            ItemID.LUNAR_TABLET_WATERBIRTH_TELEPORT,
+            ItemID.MAGIC_STRUNG_LYRE,
+            ItemID.MAGIC_STRUNG_LYRE_2,
+            ItemID.MAGIC_STRUNG_LYRE_3,
+            ItemID.MAGIC_STRUNG_LYRE_4,
+            ItemID.MAGIC_STRUNG_LYRE_5,
+            ItemID.MAGIC_STRUNG_LYRE_INFINITE,
+            ItemID.MAGIC_WHISTLE,
+            ItemID.MM2_ROYAL_SEED_POD,
+            ItemID.MM_SIGIL,
+            ItemID.MORYTANIA_LEGS_EASY,
+            ItemID.MORYTANIA_LEGS_ELITE,
+            ItemID.MORYTANIA_LEGS_HARD,
+            ItemID.MORYTANIA_LEGS_MEDIUM,
+            ItemID.MOURNING_TELEPORT_CRYSTAL_1,
+            ItemID.MOURNING_TELEPORT_CRYSTAL_2,
+            ItemID.MOURNING_TELEPORT_CRYSTAL_3,
+            ItemID.MOURNING_TELEPORT_CRYSTAL_4,
+            ItemID.MOURNING_TELEPORT_CRYSTAL_5,
+            ItemID.MUSIC_CAPE,
+            ItemID.MYTHICAL_CAPE,
+            ItemID.NECKLACE_OF_DIGSITE_1,
+            ItemID.NECKLACE_OF_DIGSITE_2,
+            ItemID.NECKLACE_OF_DIGSITE_3,
+            ItemID.NECKLACE_OF_DIGSITE_4,
+            ItemID.NECKLACE_OF_DIGSITE_5,
+            ItemID.NECKLACE_OF_MINIGAMES_1,
+            ItemID.NECKLACE_OF_MINIGAMES_2,
+            ItemID.NECKLACE_OF_MINIGAMES_3,
+            ItemID.NECKLACE_OF_MINIGAMES_4,
+            ItemID.NECKLACE_OF_MINIGAMES_5,
+            ItemID.NECKLACE_OF_MINIGAMES_6,
+            ItemID.NECKLACE_OF_MINIGAMES_7,
+            ItemID.NECKLACE_OF_MINIGAMES_8,
+            ItemID.NECKLACE_OF_PASSAGE_1,
+            ItemID.NECKLACE_OF_PASSAGE_2,
+            ItemID.NECKLACE_OF_PASSAGE_3,
+            ItemID.NECKLACE_OF_PASSAGE_4,
+            ItemID.NECKLACE_OF_PASSAGE_5,
+            ItemID.NZONE_TELETAB_ALDARIN,
+            ItemID.NZONE_TELETAB_BRIMHAVEN,
+            ItemID.NZONE_TELETAB_KOUREND,
+            ItemID.NZONE_TELETAB_POLLNIVNEACH,
+            ItemID.NZONE_TELETAB_RELLEKKA,
+            ItemID.NZONE_TELETAB_RIMMINGTON,
+            ItemID.NZONE_TELETAB_TAVERLEY,
+            ItemID.NZONE_TELETAB_TROLLHEIM,
+            ItemID.NZONE_TELETAB_YANILLE,
+            ItemID.PENDANT_OF_ATES,
+            ItemID.PHARAOHS_SCEPTRE_CHARGED_INITIAL,
+            ItemID.POH_TABLET_ARDOUGNETELEPORT,
+            ItemID.POH_TABLET_CAMELOTTELEPORT,
+            ItemID.POH_TABLET_FALADORTELEPORT,
+            ItemID.POH_TABLET_FORTISTELEPORT,
+            ItemID.POH_TABLET_KOURENDTELEPORT,
+            ItemID.POH_TABLET_LUMBRIDGETELEPORT,
+            ItemID.POH_TABLET_TELEPORTTOHOUSE,
+            ItemID.POH_TABLET_VARROCKTELEPORT,
+            ItemID.POH_TABLET_WATCHTOWERTELEPORT,
+            ItemID.PRIF_TELEPORT_CRYSTAL,
+            ItemID.RATCATCHERS_PARTY_DIRECTIONS,
+            ItemID.RING_OF_DUELING_1,
+            ItemID.RING_OF_DUELING_2,
+            ItemID.RING_OF_DUELING_3,
+            ItemID.RING_OF_DUELING_4,
+            ItemID.RING_OF_DUELING_5,
+            ItemID.RING_OF_DUELING_6,
+            ItemID.RING_OF_DUELING_7,
+            ItemID.RING_OF_DUELING_8,
+            ItemID.RING_OF_ELEMENTS_CHARGED,
+            ItemID.RING_OF_LIFE,
+            ItemID.RING_OF_RETURNING_1,
+            ItemID.RING_OF_RETURNING_2,
+            ItemID.RING_OF_RETURNING_3,
+            ItemID.RING_OF_RETURNING_4,
+            ItemID.RING_OF_RETURNING_5,
+            ItemID.RING_OF_WEALTH,
+            ItemID.RING_OF_WEALTH_1,
+            ItemID.RING_OF_WEALTH_2,
+            ItemID.RING_OF_WEALTH_3,
+            ItemID.RING_OF_WEALTH_4,
+            ItemID.RING_OF_WEALTH_5,
+            ItemID.RING_OF_WEALTH_I,
+            ItemID.SEERS_HEADBAND_ELITE,
+            ItemID.SEERS_HEADBAND_HARD,
+            ItemID.SKILLCAPE_AD,
+            ItemID.SKILLCAPE_CONSTRUCTION,
+            ItemID.SKILLCAPE_CRAFTING,
+            ItemID.SKILLCAPE_DEFENCE,
+            ItemID.SKILLCAPE_FARMING,
+            ItemID.SKILLCAPE_FISHING,
+            ItemID.SKILLCAPE_HUNTING,
+            ItemID.SKILLCAPE_MAX_ARDY,
+            ItemID.SKILLCAPE_MAX_MYTHICAL,
+            ItemID.SKILLCAPE_MAX_WORN,
+            ItemID.SKILLCAPE_QP,
+            ItemID.SKILLCAPE_STRENGTH,
+            ItemID.SLAYER_RING_1,
+            ItemID.SLAYER_RING_2,
+            ItemID.SLAYER_RING_3,
+            ItemID.SLAYER_RING_4,
+            ItemID.SLAYER_RING_5,
+            ItemID.SLAYER_RING_6,
+            ItemID.SLAYER_RING_7,
+            ItemID.SLAYER_RING_8,
+            ItemID.SLAYER_RING_ETERNAL,
+            ItemID.SLICE_TELEPORT_ARTIFACT,
+            ItemID.SOS_SKULL_SCEPTRE,
+            ItemID.SOS_SKULL_SCEPTRE_IMBUED,
+            ItemID.STRONGHOLD_TELEPORT_BASALT,
+            ItemID.TABLET_ANNAKARL,
+            ItemID.TABLET_CARRALLANGAR,
+            ItemID.TABLET_DAREEYAK,
+            ItemID.TABLET_GHORROCK,
+            ItemID.TABLET_KHARYLL,
+            ItemID.TABLET_LASSAR,
+            ItemID.TABLET_PADDEWA,
+            ItemID.TABLET_SENNTISTEN,
+            ItemID.TABLET_TARGET,
+            ItemID.TABLET_WILDYCRABS,
+            ItemID.TELEPORTSCROLL_CERBERUS,
+            ItemID.TELEPORTSCROLL_CHASMOFFIRE,
+            ItemID.TELEPORTSCROLL_COLOSSAL_WYRM,
+            ItemID.TELEPORTSCROLL_DIGSITE,
+            ItemID.TELEPORTSCROLL_ELF,
+            ItemID.TELEPORTSCROLL_FELDIP,
+            ItemID.TELEPORTSCROLL_GUTHIXIAN_TEMPLE,
+            ItemID.TELEPORTSCROLL_LUMBERYARD,
+            ItemID.TELEPORTSCROLL_LUNARISLE,
+            ItemID.TELEPORTSCROLL_MORTTON,
+            ItemID.TELEPORTSCROLL_MOSLES,
+            ItemID.TELEPORTSCROLL_NARDAH,
+            ItemID.TELEPORTSCROLL_PESTCONTROL,
+            ItemID.TELEPORTSCROLL_PISCATORIS,
+            ItemID.TELEPORTSCROLL_REVENANTS,
+            ItemID.TELEPORTSCROLL_SPIDERCAVE,
+            ItemID.TELEPORTSCROLL_TAIBWO,
+            ItemID.TELEPORTSCROLL_WATSON,
+            ItemID.TELEPORTSCROLL_ZULANDRA,
+            ItemID.TELETAB_APE,
+            ItemID.TELETAB_BARROWS,
+            ItemID.TELETAB_BATTLEFRONT,
+            ItemID.TELETAB_CEMETERY,
+            ItemID.TELETAB_DRAYNOR,
+            ItemID.TELETAB_FENK,
+            ItemID.TELETAB_HARMONY,
+            ItemID.TELETAB_LUMBRIDGE,
+            ItemID.TELETAB_MIND_ALTAR,
+            ItemID.TELETAB_SALVE,
+            ItemID.TELETAB_WESTARDY,
+            ItemID.TRAIL_AMULET_OF_GLORY,
+            ItemID.VARLAMORE_MINING_TELEPORT,
+            ItemID.VEOS_KHAREDSTS_MEMOIRS,
+            ItemID.VIKING_ENCHANTED_STRUNG_LYRE,
+            ItemID.WEISS_TELEPORT_BASALT,
+            ItemID.WESTERN_BANNER_ELITE,
+            ItemID.WESTERN_BANNER_HARD,
+            ItemID.WILDERNESS_SWORD_ELITE,
+            ItemID.WILDERNESS_SWORD_HARD,
+            ItemID.XERIC_TALISMAN,
+            ItemID.XMAS17_TELETAB,
+            ItemID.XMAS19_TABLET_SCAPE_RUNE,
+            ItemID.ZEAH_BLESSING_EASY,
+            ItemID.ZEAH_BLESSING_ELITE,
+            ItemID.ZEAH_BLESSING_HARD,
+            ItemID.ZEAH_BLESSING_MEDIUM,
+            //Partial matches
+            ItemID.SKILLCAPE_AD_TRIMMED,
+            ItemID.TRAIL_AMULET_OF_GLORY_1,
+            ItemID.TRAIL_AMULET_OF_GLORY_2,
+            ItemID.TRAIL_AMULET_OF_GLORY_3,
+            ItemID.TRAIL_AMULET_OF_GLORY_4,
+            ItemID.TRAIL_AMULET_OF_GLORY_5,
+            ItemID.TRAIL_AMULET_OF_GLORY_6,
+            ItemID.SKILLCAPE_CONSTRUCTION_TRIMMED,
+            ItemID.SKILLCAPE_CRAFTING_TRIMMED,
+            ItemID.PRIF_TELEPORT_SEED,
+            ItemID.SKILLCAPE_DEFENCE_TRIMMED,
+            ItemID.POH_AMULET_DIGSITE,
+            ItemID.SKILLCAPE_FARMING_TRIMMED,
+            ItemID.SKILLCAPE_FISHING_TRIMMED,
+            ItemID.INFERNAL_DEFENDER_GHOMMAL_5_TROUVER,
+            ItemID.INFERNAL_DEFENDER_GHOMMAL_6_TROUVER,
+            ItemID.SKILLCAPE_HUNTING_TRIMMED,
+            ItemID.BR_TABLET_ANCIENTS,
+            ItemID.SKILLCAPE_MAX_ANMA,
+            ItemID.SKILLCAPE_MAX_ASSEMBLER,
+            ItemID.SKILLCAPE_MAX_ASSEMBLER_BROKEN,
+            ItemID.SKILLCAPE_MAX_ASSEMBLER_MASORI,
+            ItemID.SKILLCAPE_MAX_ASSEMBLER_MASORI_BROKEN,
+            ItemID.SKILLCAPE_MAX_ASSEMBLER_MASORI_TROUVER,
+            ItemID.SKILLCAPE_MAX_ASSEMBLER_TROUVER,
+            ItemID.SKILLCAPE_MAX_DIZANAS,
+            ItemID.SKILLCAPE_MAX_DIZANAS_BROKEN,
+            ItemID.SKILLCAPE_MAX_DIZANAS_TROUVER,
+            ItemID.SKILLCAPE_MAX_FIRECAPE_BROKEN,
+            ItemID.SKILLCAPE_MAX_FIRECAPE_DUMMY,
+            ItemID.SKILLCAPE_MAX_FIRECAPE_TROUVER,
+            ItemID.SKILLCAPE_MAX_GUTHIX,
+            ItemID.SKILLCAPE_MAX_GUTHIX2,
+            ItemID.SKILLCAPE_MAX_GUTHIX2_BROKEN,
+            ItemID.SKILLCAPE_MAX_GUTHIX2_TROUVER,
+            ItemID.SKILLCAPE_MAX_INFERNALCAPE,
+            ItemID.SKILLCAPE_MAX_INFERNALCAPE_BROKEN,
+            ItemID.SKILLCAPE_MAX_INFERNALCAPE_TROUVER,
+            ItemID.SKILLCAPE_MAX_SARADOMIN,
+            ItemID.SKILLCAPE_MAX_SARADOMIN2,
+            ItemID.SKILLCAPE_MAX_SARADOMIN2_BROKEN,
+            ItemID.SKILLCAPE_MAX_SARADOMIN2_TROUVER,
+            ItemID.SKILLCAPE_MAX_ZAMORAK,
+            ItemID.SKILLCAPE_MAX_ZAMORAK2,
+            ItemID.SKILLCAPE_MAX_ZAMORAK2_BROKEN,
+            ItemID.SKILLCAPE_MAX_ZAMORAK2_TROUVER,
+            ItemID.MUSIC_CAPE_TRIMMED,
+            ItemID.PHARAOHS_SCEPTRE,
+            ItemID.BH_IMBUE_RINGOFWEALTH,
+            ItemID.RING_OF_WEALTH_I1,
+            ItemID.RING_OF_WEALTH_I2,
+            ItemID.RING_OF_WEALTH_I3,
+            ItemID.RING_OF_WEALTH_I4,
+            ItemID.RING_OF_WEALTH_I5,
+            ItemID.SKILLCAPE_STRENGTH_TRIMMED,
+            ItemID.BOUNTY_TELEPORT_SCROLL,
+            ItemID.GAUNTLET_TELEPORT_CRYSTAL_HM,
+            //Added manually
+            ItemID.BREW_RED_RUM,
+            ItemID.BREW_BLUE_RUM,
+            ItemID.PHARAOHS_SCEPTRE_CHARGED,
+            ItemID.WILDERNESS_SWORD_EASY,
+            ItemID.WILDERNESS_SWORD_MEDIUM,
+            ItemID.WESTERN_BANNER_EASY,
+            ItemID.WESTERN_BANNER_MEDIUM,
+            ItemID.ATJUN_GLOVES_EASY,
+            ItemID.ATJUN_GLOVES_MED,
+            ItemID.SEERS_HEADBAND_EASY,
+            ItemID.SEERS_HEADBAND_MEDIUM,
+            ItemID.LUMBRIDGE_RING_EASY,
+            ItemID.ECTOPHIAL,
+            ItemID.DESERT_AMULET_EASY,
+            ItemID.VARLAMORE_MINING_TELEPORT_1,
+            ItemID.VARLAMORE_MINING_TELEPORT_2,
+            ItemID.VARLAMORE_MINING_TELEPORT_3,
+            ItemID.VARLAMORE_MINING_TELEPORT_4,
+            ItemID.VARLAMORE_MINING_TELEPORT_5,
+            ItemID.VARLAMORE_MINING_TELEPORT_25,
+            ItemID.SKILLCAPE_MAX,
+            ItemID.SKILLCAPE_AD_HOOD
+    ));
+
     /**
      *
      * Sigh... I have no clue how to otherwise determine the player is trying to teleport if it doesn't say in the item's name or menu action "Teleport"
@@ -29,334 +361,6 @@ public class IsTeleportItem {
      * @return true if it's an item you use to teleport, otherwise false
      */
     public static boolean itemIsTeleportItem (int itemID) {
-        switch (itemID) {
-            //Script found these automatically
-            case ItemID.ALUFT_SEED_POD:
-            case ItemID.AMULET_OF_GLORY_1:
-            case ItemID.AMULET_OF_GLORY_2:
-            case ItemID.AMULET_OF_GLORY_3:
-            case ItemID.AMULET_OF_GLORY_4:
-            case ItemID.AMULET_OF_GLORY_5:
-            case ItemID.AMULET_OF_GLORY_6:
-            case ItemID.AMULET_OF_GLORY_INF:
-            case ItemID.ARDY_CAPE_EASY:
-            case ItemID.ARDY_CAPE_ELITE:
-            case ItemID.ARDY_CAPE_HARD:
-            case ItemID.ARDY_CAPE_MEDIUM:
-            case ItemID.ATJUN_GLOVES_ELITE:
-            case ItemID.ATJUN_GLOVES_HARD:
-            case ItemID.BOOKOFSCROLLS_CHARGED:
-            case ItemID.BOOK_OF_THE_DEAD:
-            case ItemID.BR_AMULET_OF_GLORY:
-            case ItemID.BURNING_AMULET_1:
-            case ItemID.BURNING_AMULET_2:
-            case ItemID.BURNING_AMULET_3:
-            case ItemID.BURNING_AMULET_4:
-            case ItemID.BURNING_AMULET_5:
-            case ItemID.CAMULET:
-            case ItemID.CA_OFFHAND_EASY:
-            case ItemID.CA_OFFHAND_ELITE:
-            case ItemID.CA_OFFHAND_GRANDMASTER:
-            case ItemID.CA_OFFHAND_HARD:
-            case ItemID.CA_OFFHAND_MASTER:
-            case ItemID.CA_OFFHAND_MEDIUM:
-            case ItemID.CHRONICLE:
-            case ItemID.DEADMAN_TOURNAMENT_TELETAB:
-            case ItemID.DESERT_AMULET_ELITE:
-            case ItemID.DESERT_AMULET_HARD:
-            case ItemID.DESERT_AMULET_MEDIUM:
-            case ItemID.DISCOFRETURNING:
-            case ItemID.DORGESH_TELEPORT_ARTIFACT:
-            case ItemID.DRAKANS_MEDALLION:
-            case ItemID.ECTOPHIAL_EMPTY:
-            case ItemID.ELF_CRYSTAL_TINY:
-            case ItemID.FOSSIL_TABLET_VOLCANOTELEPORT:
-            case ItemID.FREMENNIK_BOOTS_EASY:
-            case ItemID.FREMENNIK_BOOTS_ELITE:
-            case ItemID.FREMENNIK_BOOTS_HARD:
-            case ItemID.FREMENNIK_BOOTS_MEDIUM:
-            case ItemID.GAUNTLET_TELEPORT_CRYSTAL:
-            case ItemID.GIANTSOUL_AMULET_CHARGED:
-            case ItemID.HALLOWED_TELEPORT:
-            case ItemID.HG_QUETZALWHISTLE_BASIC:
-            case ItemID.HG_QUETZALWHISTLE_ENHANCED:
-            case ItemID.HG_QUETZALWHISTLE_PERFECTED:
-            case ItemID.INFERNAL_DEFENDER_GHOMMAL_5:
-            case ItemID.INFERNAL_DEFENDER_GHOMMAL_6:
-            case ItemID.JEWL_BRACELET_OF_COMBAT:
-            case ItemID.JEWL_BRACELET_OF_COMBAT_1:
-            case ItemID.JEWL_BRACELET_OF_COMBAT_2:
-            case ItemID.JEWL_BRACELET_OF_COMBAT_3:
-            case ItemID.JEWL_BRACELET_OF_COMBAT_4:
-            case ItemID.JEWL_BRACELET_OF_COMBAT_5:
-            case ItemID.JEWL_BRACELET_OF_COMBAT_6:
-            case ItemID.JEWL_NECKLACE_OF_SKILLS:
-            case ItemID.JEWL_NECKLACE_OF_SKILLS_1:
-            case ItemID.JEWL_NECKLACE_OF_SKILLS_2:
-            case ItemID.JEWL_NECKLACE_OF_SKILLS_3:
-            case ItemID.JEWL_NECKLACE_OF_SKILLS_4:
-            case ItemID.JEWL_NECKLACE_OF_SKILLS_5:
-            case ItemID.JEWL_NECKLACE_OF_SKILLS_6:
-            case ItemID.LOTG_TELEPORT_ARTIFACT:
-            case ItemID.LUMBRIDGE_RING_ELITE:
-            case ItemID.LUMBRIDGE_RING_HARD:
-            case ItemID.LUMBRIDGE_RING_MEDIUM:
-            case ItemID.LUNAR_TABLET_BARBARIAN_TELEPORT:
-            case ItemID.LUNAR_TABLET_CATHERBY_TELEPORT:
-            case ItemID.LUNAR_TABLET_FISHING_GUILD_TELEPORT:
-            case ItemID.LUNAR_TABLET_ICE_PLATEAU_TELEPORT:
-            case ItemID.LUNAR_TABLET_KHAZARD_TELEPORT:
-            case ItemID.LUNAR_TABLET_MOONCLAN_TELEPORT:
-            case ItemID.LUNAR_TABLET_OURANIA_TELEPORT:
-            case ItemID.LUNAR_TABLET_WATERBIRTH_TELEPORT:
-            case ItemID.MAGIC_STRUNG_LYRE:
-            case ItemID.MAGIC_STRUNG_LYRE_2:
-            case ItemID.MAGIC_STRUNG_LYRE_3:
-            case ItemID.MAGIC_STRUNG_LYRE_4:
-            case ItemID.MAGIC_STRUNG_LYRE_5:
-            case ItemID.MAGIC_STRUNG_LYRE_INFINITE:
-            case ItemID.MAGIC_WHISTLE:
-            case ItemID.MM2_ROYAL_SEED_POD:
-            case ItemID.MM_SIGIL:
-            case ItemID.MORYTANIA_LEGS_EASY:
-            case ItemID.MORYTANIA_LEGS_ELITE:
-            case ItemID.MORYTANIA_LEGS_HARD:
-            case ItemID.MORYTANIA_LEGS_MEDIUM:
-            case ItemID.MOURNING_TELEPORT_CRYSTAL_1:
-            case ItemID.MOURNING_TELEPORT_CRYSTAL_2:
-            case ItemID.MOURNING_TELEPORT_CRYSTAL_3:
-            case ItemID.MOURNING_TELEPORT_CRYSTAL_4:
-            case ItemID.MOURNING_TELEPORT_CRYSTAL_5:
-            case ItemID.MUSIC_CAPE:
-            case ItemID.MYTHICAL_CAPE:
-            case ItemID.NECKLACE_OF_DIGSITE_1:
-            case ItemID.NECKLACE_OF_DIGSITE_2:
-            case ItemID.NECKLACE_OF_DIGSITE_3:
-            case ItemID.NECKLACE_OF_DIGSITE_4:
-            case ItemID.NECKLACE_OF_DIGSITE_5:
-            case ItemID.NECKLACE_OF_MINIGAMES_1:
-            case ItemID.NECKLACE_OF_MINIGAMES_2:
-            case ItemID.NECKLACE_OF_MINIGAMES_3:
-            case ItemID.NECKLACE_OF_MINIGAMES_4:
-            case ItemID.NECKLACE_OF_MINIGAMES_5:
-            case ItemID.NECKLACE_OF_MINIGAMES_6:
-            case ItemID.NECKLACE_OF_MINIGAMES_7:
-            case ItemID.NECKLACE_OF_MINIGAMES_8:
-            case ItemID.NECKLACE_OF_PASSAGE_1:
-            case ItemID.NECKLACE_OF_PASSAGE_2:
-            case ItemID.NECKLACE_OF_PASSAGE_3:
-            case ItemID.NECKLACE_OF_PASSAGE_4:
-            case ItemID.NECKLACE_OF_PASSAGE_5:
-            case ItemID.NZONE_TELETAB_ALDARIN:
-            case ItemID.NZONE_TELETAB_BRIMHAVEN:
-            case ItemID.NZONE_TELETAB_KOUREND:
-            case ItemID.NZONE_TELETAB_POLLNIVNEACH:
-            case ItemID.NZONE_TELETAB_RELLEKKA:
-            case ItemID.NZONE_TELETAB_RIMMINGTON:
-            case ItemID.NZONE_TELETAB_TAVERLEY:
-            case ItemID.NZONE_TELETAB_TROLLHEIM:
-            case ItemID.NZONE_TELETAB_YANILLE:
-            case ItemID.PENDANT_OF_ATES:
-            case ItemID.PHARAOHS_SCEPTRE_CHARGED_INITIAL:
-            case ItemID.POH_TABLET_ARDOUGNETELEPORT:
-            case ItemID.POH_TABLET_CAMELOTTELEPORT:
-            case ItemID.POH_TABLET_FALADORTELEPORT:
-            case ItemID.POH_TABLET_FORTISTELEPORT:
-            case ItemID.POH_TABLET_KOURENDTELEPORT:
-            case ItemID.POH_TABLET_LUMBRIDGETELEPORT:
-            case ItemID.POH_TABLET_TELEPORTTOHOUSE:
-            case ItemID.POH_TABLET_VARROCKTELEPORT:
-            case ItemID.POH_TABLET_WATCHTOWERTELEPORT:
-            case ItemID.PRIF_TELEPORT_CRYSTAL:
-            case ItemID.RATCATCHERS_PARTY_DIRECTIONS:
-            case ItemID.RING_OF_DUELING_1:
-            case ItemID.RING_OF_DUELING_2:
-            case ItemID.RING_OF_DUELING_3:
-            case ItemID.RING_OF_DUELING_4:
-            case ItemID.RING_OF_DUELING_5:
-            case ItemID.RING_OF_DUELING_6:
-            case ItemID.RING_OF_DUELING_7:
-            case ItemID.RING_OF_DUELING_8:
-            case ItemID.RING_OF_ELEMENTS_CHARGED:
-            case ItemID.RING_OF_LIFE:
-            case ItemID.RING_OF_RETURNING_1:
-            case ItemID.RING_OF_RETURNING_2:
-            case ItemID.RING_OF_RETURNING_3:
-            case ItemID.RING_OF_RETURNING_4:
-            case ItemID.RING_OF_RETURNING_5:
-            case ItemID.RING_OF_WEALTH:
-            case ItemID.RING_OF_WEALTH_1:
-            case ItemID.RING_OF_WEALTH_2:
-            case ItemID.RING_OF_WEALTH_3:
-            case ItemID.RING_OF_WEALTH_4:
-            case ItemID.RING_OF_WEALTH_5:
-            case ItemID.RING_OF_WEALTH_I:
-            case ItemID.SEERS_HEADBAND_ELITE:
-            case ItemID.SEERS_HEADBAND_HARD:
-            case ItemID.SKILLCAPE_AD:
-            case ItemID.SKILLCAPE_CONSTRUCTION:
-            case ItemID.SKILLCAPE_CRAFTING:
-            case ItemID.SKILLCAPE_DEFENCE:
-            case ItemID.SKILLCAPE_FARMING:
-            case ItemID.SKILLCAPE_FISHING:
-            case ItemID.SKILLCAPE_HUNTING:
-            case ItemID.SKILLCAPE_MAX_ARDY:
-            case ItemID.SKILLCAPE_MAX_MYTHICAL:
-            case ItemID.SKILLCAPE_MAX_WORN:
-            case ItemID.SKILLCAPE_QP:
-            case ItemID.SKILLCAPE_STRENGTH:
-            case ItemID.SLAYER_RING_1:
-            case ItemID.SLAYER_RING_2:
-            case ItemID.SLAYER_RING_3:
-            case ItemID.SLAYER_RING_4:
-            case ItemID.SLAYER_RING_5:
-            case ItemID.SLAYER_RING_6:
-            case ItemID.SLAYER_RING_7:
-            case ItemID.SLAYER_RING_8:
-            case ItemID.SLAYER_RING_ETERNAL:
-            case ItemID.SLICE_TELEPORT_ARTIFACT:
-            case ItemID.SOS_SKULL_SCEPTRE:
-            case ItemID.SOS_SKULL_SCEPTRE_IMBUED:
-            case ItemID.STRONGHOLD_TELEPORT_BASALT:
-            case ItemID.TABLET_ANNAKARL:
-            case ItemID.TABLET_CARRALLANGAR:
-            case ItemID.TABLET_DAREEYAK:
-            case ItemID.TABLET_GHORROCK:
-            case ItemID.TABLET_KHARYLL:
-            case ItemID.TABLET_LASSAR:
-            case ItemID.TABLET_PADDEWA:
-            case ItemID.TABLET_SENNTISTEN:
-            case ItemID.TABLET_TARGET:
-            case ItemID.TABLET_WILDYCRABS:
-            case ItemID.TELEPORTSCROLL_CERBERUS:
-            case ItemID.TELEPORTSCROLL_CHASMOFFIRE:
-            case ItemID.TELEPORTSCROLL_COLOSSAL_WYRM:
-            case ItemID.TELEPORTSCROLL_DIGSITE:
-            case ItemID.TELEPORTSCROLL_ELF:
-            case ItemID.TELEPORTSCROLL_FELDIP:
-            case ItemID.TELEPORTSCROLL_GUTHIXIAN_TEMPLE:
-            case ItemID.TELEPORTSCROLL_LUMBERYARD:
-            case ItemID.TELEPORTSCROLL_LUNARISLE:
-            case ItemID.TELEPORTSCROLL_MORTTON:
-            case ItemID.TELEPORTSCROLL_MOSLES:
-            case ItemID.TELEPORTSCROLL_NARDAH:
-            case ItemID.TELEPORTSCROLL_PESTCONTROL:
-            case ItemID.TELEPORTSCROLL_PISCATORIS:
-            case ItemID.TELEPORTSCROLL_REVENANTS:
-            case ItemID.TELEPORTSCROLL_SPIDERCAVE:
-            case ItemID.TELEPORTSCROLL_TAIBWO:
-            case ItemID.TELEPORTSCROLL_WATSON:
-            case ItemID.TELEPORTSCROLL_ZULANDRA:
-            case ItemID.TELETAB_APE:
-            case ItemID.TELETAB_BARROWS:
-            case ItemID.TELETAB_BATTLEFRONT:
-            case ItemID.TELETAB_CEMETERY:
-            case ItemID.TELETAB_DRAYNOR:
-            case ItemID.TELETAB_FENK:
-            case ItemID.TELETAB_HARMONY:
-            case ItemID.TELETAB_LUMBRIDGE:
-            case ItemID.TELETAB_MIND_ALTAR:
-            case ItemID.TELETAB_SALVE:
-            case ItemID.TELETAB_WESTARDY:
-            case ItemID.TRAIL_AMULET_OF_GLORY:
-            case ItemID.VARLAMORE_MINING_TELEPORT:
-            case ItemID.VEOS_KHAREDSTS_MEMOIRS:
-            case ItemID.VIKING_ENCHANTED_STRUNG_LYRE:
-            case ItemID.WEISS_TELEPORT_BASALT:
-            case ItemID.WESTERN_BANNER_ELITE:
-            case ItemID.WESTERN_BANNER_HARD:
-            case ItemID.WILDERNESS_SWORD_ELITE:
-            case ItemID.WILDERNESS_SWORD_HARD:
-            case ItemID.XERIC_TALISMAN:
-            case ItemID.XMAS17_TELETAB:
-            case ItemID.XMAS19_TABLET_SCAPE_RUNE:
-            case ItemID.ZEAH_BLESSING_EASY:
-            case ItemID.ZEAH_BLESSING_ELITE:
-            case ItemID.ZEAH_BLESSING_HARD:
-            case ItemID.ZEAH_BLESSING_MEDIUM:
-            //Partial matches
-            case ItemID.SKILLCAPE_AD_TRIMMED:
-            case ItemID.TRAIL_AMULET_OF_GLORY_1:
-            case ItemID.TRAIL_AMULET_OF_GLORY_2:
-            case ItemID.TRAIL_AMULET_OF_GLORY_3:
-            case ItemID.TRAIL_AMULET_OF_GLORY_4:
-            case ItemID.TRAIL_AMULET_OF_GLORY_5:
-            case ItemID.TRAIL_AMULET_OF_GLORY_6:
-            case ItemID.SKILLCAPE_CONSTRUCTION_TRIMMED:
-            case ItemID.SKILLCAPE_CRAFTING_TRIMMED:
-            case ItemID.PRIF_TELEPORT_SEED:
-            case ItemID.SKILLCAPE_DEFENCE_TRIMMED:
-            case ItemID.POH_AMULET_DIGSITE:
-            case ItemID.SKILLCAPE_FARMING_TRIMMED:
-            case ItemID.SKILLCAPE_FISHING_TRIMMED:
-            case ItemID.INFERNAL_DEFENDER_GHOMMAL_5_TROUVER:
-            case ItemID.INFERNAL_DEFENDER_GHOMMAL_6_TROUVER:
-            case ItemID.SKILLCAPE_HUNTING_TRIMMED:
-            case ItemID.BR_TABLET_ANCIENTS:
-            case ItemID.SKILLCAPE_MAX_ANMA:
-            case ItemID.SKILLCAPE_MAX_ASSEMBLER:
-            case ItemID.SKILLCAPE_MAX_ASSEMBLER_BROKEN:
-            case ItemID.SKILLCAPE_MAX_ASSEMBLER_MASORI:
-            case ItemID.SKILLCAPE_MAX_ASSEMBLER_MASORI_BROKEN:
-            case ItemID.SKILLCAPE_MAX_ASSEMBLER_MASORI_TROUVER:
-            case ItemID.SKILLCAPE_MAX_ASSEMBLER_TROUVER:
-            case ItemID.SKILLCAPE_MAX_DIZANAS:
-            case ItemID.SKILLCAPE_MAX_DIZANAS_BROKEN:
-            case ItemID.SKILLCAPE_MAX_DIZANAS_TROUVER:
-            case ItemID.SKILLCAPE_MAX_FIRECAPE_BROKEN:
-            case ItemID.SKILLCAPE_MAX_FIRECAPE_DUMMY:
-            case ItemID.SKILLCAPE_MAX_FIRECAPE_TROUVER:
-            case ItemID.SKILLCAPE_MAX_GUTHIX:
-            case ItemID.SKILLCAPE_MAX_GUTHIX2:
-            case ItemID.SKILLCAPE_MAX_GUTHIX2_BROKEN:
-            case ItemID.SKILLCAPE_MAX_GUTHIX2_TROUVER:
-            case ItemID.SKILLCAPE_MAX_INFERNALCAPE:
-            case ItemID.SKILLCAPE_MAX_INFERNALCAPE_BROKEN:
-            case ItemID.SKILLCAPE_MAX_INFERNALCAPE_TROUVER:
-            case ItemID.SKILLCAPE_MAX_SARADOMIN:
-            case ItemID.SKILLCAPE_MAX_SARADOMIN2:
-            case ItemID.SKILLCAPE_MAX_SARADOMIN2_BROKEN:
-            case ItemID.SKILLCAPE_MAX_SARADOMIN2_TROUVER:
-            case ItemID.SKILLCAPE_MAX_ZAMORAK:
-            case ItemID.SKILLCAPE_MAX_ZAMORAK2:
-            case ItemID.SKILLCAPE_MAX_ZAMORAK2_BROKEN:
-            case ItemID.SKILLCAPE_MAX_ZAMORAK2_TROUVER:
-            case ItemID.MUSIC_CAPE_TRIMMED:
-            case ItemID.PHARAOHS_SCEPTRE:
-            case ItemID.BH_IMBUE_RINGOFWEALTH:
-            case ItemID.RING_OF_WEALTH_I1:
-            case ItemID.RING_OF_WEALTH_I2:
-            case ItemID.RING_OF_WEALTH_I3:
-            case ItemID.RING_OF_WEALTH_I4:
-            case ItemID.RING_OF_WEALTH_I5:
-            case ItemID.SKILLCAPE_STRENGTH_TRIMMED:
-            case ItemID.BOUNTY_TELEPORT_SCROLL:
-            case ItemID.GAUNTLET_TELEPORT_CRYSTAL_HM:
-            //Added manually
-            case ItemID.BREW_RED_RUM:
-            case ItemID.BREW_BLUE_RUM:
-            case ItemID.PHARAOHS_SCEPTRE_CHARGED:
-            case ItemID.WILDERNESS_SWORD_EASY:
-            case ItemID.WILDERNESS_SWORD_MEDIUM:
-            case ItemID.WESTERN_BANNER_EASY:
-            case ItemID.WESTERN_BANNER_MEDIUM:
-            case ItemID.ATJUN_GLOVES_EASY:
-            case ItemID.ATJUN_GLOVES_MED:
-            case ItemID.SEERS_HEADBAND_EASY:
-            case ItemID.SEERS_HEADBAND_MEDIUM:
-            case ItemID.LUMBRIDGE_RING_EASY:
-            case ItemID.ECTOPHIAL:
-            case ItemID.DESERT_AMULET_EASY:
-            case ItemID.VARLAMORE_MINING_TELEPORT_1:
-            case ItemID.VARLAMORE_MINING_TELEPORT_2:
-            case ItemID.VARLAMORE_MINING_TELEPORT_3:
-            case ItemID.VARLAMORE_MINING_TELEPORT_4:
-            case ItemID.VARLAMORE_MINING_TELEPORT_5:
-            case ItemID.VARLAMORE_MINING_TELEPORT_25:
-            case ItemID.SKILLCAPE_MAX:
-            case ItemID.SKILLCAPE_AD_HOOD:
-                return true;
-        }
-        return false;
+        return TELEPORT_ITEM_IDS.contains(itemID);
     }
 }

@@ -145,7 +145,7 @@ public class PreventSGMPlugin extends Plugin {
                     specialCases = specialCases && !menu.equals("Drop") && !menu.equals("Remove") && !menu.equals("Examine") && !menu.equals("Check");
                     specialCases = specialCases && !menu.equals("Use") && !menu.equals("Take") && !menu.equals("Trim");
                     if (event.getItemId() == -1) {
-                        specialCases = specialCases || isWearableParam1(event.getParam1()) && !menu.equals("Remove") && !menu.equals("Examine") && !menu.equals("Check");
+                        specialCases = isWearableParam1(event.getParam1()) && !menu.equals("Remove") && !menu.equals("Examine") && !menu.equals("Check");
                     }
                     if (specialCases || event.getMenuOption().contains("Teleport") || event.getMenuTarget().contains("Teleport")) {
                         event.consume();
