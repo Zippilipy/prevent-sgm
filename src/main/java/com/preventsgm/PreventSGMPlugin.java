@@ -8,6 +8,7 @@ import net.runelite.api.Item;
 import net.runelite.api.events.*;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
@@ -97,12 +98,7 @@ public class PreventSGMPlugin extends Plugin {
 
     @Subscribe
     public void onItemContainerChanged(ItemContainerChanged event) {
-        /**
-         * This 93 was found just trying out with debugging
-         * I'm not sure how to get this number with the api calls to make it resistant to breaking upon some update
-         */
-        int inventoryContainerId = 93;
-        if (event.getContainerId() == inventoryContainerId) {
+        if (event.getContainerId() == InventoryID.INV) {
             Item[] items = event.getItemContainer().getItems();
             updateBonesAndAshes(items);
         }
