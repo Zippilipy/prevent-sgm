@@ -7,6 +7,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.events.*;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
@@ -37,9 +38,9 @@ public class PreventSGMPlugin extends Plugin {
     private static final int WITHDRAW = 786445;
     private static final int DEPOSIT_ALL = 786476;
     private static final int DEPOSIT = 983043;
-    private static final int SUPERGLASS_MAKE = 14286971;
-    private static final int DEMONIC_OFFERING = 14287027;
-    private static final int SINISTER_OFFERING = 14287028;
+    private static final int SUPERGLASS_MAKE = InterfaceID.MagicSpellbook.SUPERGLASS;
+    private static final int DEMONIC_OFFERING = InterfaceID.MagicSpellbook.DEMONIC_OFFERING;
+    private static final int SINISTER_OFFERING = InterfaceID.MagicSpellbook.SINISTER_OFFERING;
     private static final int VARBIT_FOUNTAIN_OF_RUNE = 4145;
 
     private int amountOfSeaweed = 0;
