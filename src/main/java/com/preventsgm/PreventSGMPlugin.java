@@ -37,9 +37,9 @@ public class PreventSGMPlugin extends Plugin {
     private static final int WITHDRAW = 786445;
     private static final int DEPOSIT_ALL = 786476;
     private static final int DEPOSIT = 983043;
-    private static final int SUPERGLASS_MAKE = 14286969;
-    private static final int DEMONIC_OFFERING = 14287025;
-    private static final int SINISTER_OFFERING = 14287026;
+    private static final int SUPERGLASS_MAKE = 14286971;
+    private static final int DEMONIC_OFFERING = 14287027;
+    private static final int SINISTER_OFFERING = 14287028;
     private static final int VARBIT_FOUNTAIN_OF_RUNE = 4145;
 
     private int amountOfSeaweed = 0;
