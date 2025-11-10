@@ -97,6 +97,10 @@ public class PreventSGMPlugin extends Plugin {
 
     @Subscribe
     public void onItemContainerChanged(ItemContainerChanged event) {
+        /**
+         * This 93 was found just trying out with debugging
+         * I'm not sure how to get this number with the api calls to make it resistant to breaking upon some update
+         */
         int inventoryContainerId = 93;
         if (event.getContainerId() == inventoryContainerId) {
             Item[] items = event.getItemContainer().getItems();
