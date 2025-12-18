@@ -6,7 +6,7 @@ import net.runelite.client.config.*;
 public interface PreventSGMConfig extends Config {
     @ConfigSection(
             name = "Superglass Make",
-            description = "Toggles for superglass make",
+            description = "Toggles for superglass make. This plugin requires your Withdraw-X to be to set to amount of sand (default 18) and using withdraw-X on sand and withdraw-1 on seaweed.",
             position = 0
     )
     String sgmSection = "Superglass Make";
