@@ -245,23 +245,25 @@ public class PreventSGMPlugin extends Plugin {
             case ItemID.BONES:
             case ItemID.MM_NORMAL_MONKEY_BONES:
             case ItemID.BAT_BONES:
-            case ItemID.DRAGON_BONES_SUPERIOR:
-            case ItemID.ZOGRE_ANCESTRAL_BONES_OURG:
-            case ItemID.DAGANNOTH_KING_BONES:
-            case ItemID.HYDRA_BONES:
-            case ItemID.ZOGRE_ANCESTRAL_BONES_RAURG:
-            case ItemID.LAVA_DRAGON_BONES:
-            case ItemID.ZOGRE_ANCESTRAL_BONES_FAYG:
-            case ItemID.DRAKE_BONES:
-            case ItemID.WYVERN_BONES:
-            case ItemID.DRAGON_BONES:
-            case ItemID.WYRM_BONES:
-            case ItemID.BABYDRAGON_BONES:
-            case ItemID.TBWT_BEAST_BONES:
-            case ItemID.ZOGRE_BONES:
-            case ItemID.BABYWYRM_BONES:
-            case ItemID.TBWT_JOGRE_BONES:
             case ItemID.BIG_BONES:
+            case ItemID.TBWT_JOGRE_BONES:
+            case ItemID.BABYWYRM_BONES:
+            case ItemID.ZOGRE_BONES:
+            case ItemID.TBWT_BEAST_BONES:
+            case ItemID.BABYDRAGON_BONES:
+            case ItemID.WYRM_BONES:
+            case ItemID.DRAGON_BONES:
+            case ItemID.WYVERN_BONES:
+            case ItemID.DRAKE_BONES:
+            case ItemID.ZOGRE_ANCESTRAL_BONES_FAYG:
+            case ItemID.LAVA_DRAGON_BONES:
+            case ItemID.ZOGRE_ANCESTRAL_BONES_RAURG:
+            case ItemID.FROST_DRAGON_BONES:
+            case ItemID.HYDRA_BONES:
+            case ItemID.DAGANNOTH_KING_BONES:
+            case ItemID.ZOGRE_ANCESTRAL_BONES_OURG:
+            case ItemID.DRAGON_BONES_SUPERIOR:
+            case ItemID.STRYKEWYRM_BONES:
                 return true;
         }
         return false;

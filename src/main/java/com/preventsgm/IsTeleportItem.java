@@ -351,7 +351,9 @@ public class IsTeleportItem {
             ItemID.VARLAMORE_MINING_TELEPORT_5,
             ItemID.VARLAMORE_MINING_TELEPORT_25,
             ItemID.SKILLCAPE_MAX,
-            ItemID.SKILLCAPE_AD_HOOD
+            ItemID.SKILLCAPE_AD_HOOD,
+            //Sailing, manual
+            ItemID.SAILORS_AMULET
     ));
 
     /**
