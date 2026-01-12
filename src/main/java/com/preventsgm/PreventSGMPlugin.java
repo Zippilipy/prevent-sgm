@@ -157,7 +157,7 @@ public class PreventSGMPlugin extends Plugin {
                     shouldConsume = !(menu.equals("Remove") || menu.equals("Examine") || menu.equals("Cancel") || menu.equals("Check") ||
                                         menu.equals("Trim") || menu.equals("Untrim"));
                 } else {
-                    shouldConsume = menu.contains("Teleport") || event.getMenuTarget().contains("Teleport");
+                    shouldConsume = menu.toLowerCase().contains("teleport") || event.getMenuTarget().toLowerCase().contains("teleport");
                 }
                 if (shouldConsume) {
                     event.consume();
