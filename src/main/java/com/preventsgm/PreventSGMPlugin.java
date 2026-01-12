@@ -21,9 +21,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 import javax.inject.Inject;
 import java.util.Arrays;
 
-import static com.preventsgm.IsTeleportItem.isWearableParam1;
-import static com.preventsgm.IsTeleportItem.itemIsTeleportItem;
-
 @Slf4j
 @PluginDescriptor(
         name = "Prevent Misclicks",
@@ -132,36 +129,44 @@ public class PreventSGMPlugin extends Plugin {
     public void onMenuOptionClicked(MenuOptionClicked event) {
         if (config.sulphurTeleportToggle()) {
             if (client == null) {
-            } else {
-                Widget inventory = client.getWidget(ComponentID.INVENTORY_CONTAINER);
-                if (inventory == null) {
-                    return;
+                return;
+            }
+            Widget inventory = client.getWidget(ComponentID.INVENTORY_CONTAINER);
+            if (inventory == null) {
+                return;
+            }
+            Widget[] items = inventory.getChildren();
+            if (items == null) {
+                return;
+            }
+            Widget[] inventoryFiltered = Arrays.stream(items).filter(item -> item.getItemId() == ItemID.SULPHUROUS_ESSENCE).toArray(Widget[]::new);
+            int amountSulphurAsh = 0;
+            if (inventoryFiltered.length == 1) {
+                amountSulphurAsh = inventoryFiltered[0].getItemQuantity();
+            }
+            if (amountSulphurAsh >= config.sulphurAmountToggle()) {
+                boolean isItem = event.getParam1() == InterfaceID.Inventory.ITEMS; //if the item is worn, this is FALSE.
+                boolean isWornItem = event.getParam1() >= InterfaceID.Wornitems.UNIVERSE && event.getParam1() <= InterfaceID.Wornitems.EXTRA_AMMO_SLOT; //check all slots
+                boolean shouldConsume = false;
+                String menu = event.getMenuOption();
+                if (isItem) {
+                    shouldConsume = !(menu.equals("Wield") || menu.equals("Wear") || menu.equals("Check") || menu.equals("Drop") ||
+                                        menu.equals("Equip") || menu.equals("Trim") || menu.equals("Untrim") ||
+                                    menu.equals("Use") || menu.equals("Examine") || menu.equals("Cancel"));
+                } else if (isWornItem) {
+                    shouldConsume = !(menu.equals("Remove") || menu.equals("Examine") || menu.equals("Cancel") || menu.equals("Check") ||
+                                        menu.equals("Trim") || menu.equals("Untrim"));
+                } else {
+                    shouldConsume = menu.contains("Teleport") || event.getMenuTarget().contains("Teleport");
                 }
-                Widget[] items = inventory.getChildren();
-                if (items == null) {
-                    return;
-                }
-                Widget[] inventoryFiltered = Arrays.stream(items).filter(item -> item.getItemId() == ItemID.SULPHUROUS_ESSENCE).toArray(Widget[]::new);
-                int amountSulphurAsh = 0;
-                if (inventoryFiltered.length == 1) {
-                    amountSulphurAsh = inventoryFiltered[0].getItemQuantity();
-                }
-                if (amountSulphurAsh >= config.sulphurAmountToggle()) {
-                    //I haven't figured out a good way to detect if someone is trying to teleport, so this will have to do
-                    String menu = event.getMenuOption();
-                    boolean specialCases = itemIsTeleportItem(event.getItemId()) && !menu.equals("Wear") && !menu.equals("Equip");
-                    specialCases = specialCases && !menu.equals("Drop") && !menu.equals("Remove") && !menu.equals("Examine") && !menu.equals("Check");
-                    specialCases = specialCases && !menu.equals("Use") && !menu.equals("Take") && !menu.equals("Trim");
-                    if (event.getItemId() == -1) {
-                        specialCases = isWearableParam1(event.getParam1()) && !menu.equals("Remove") && !menu.equals("Examine") && !menu.equals("Check");
-                    }
-                    if (specialCases || event.getMenuOption().contains("Teleport") || event.getMenuTarget().contains("Teleport")) {
-                        event.consume();
-                        client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "[Prevent Misclicks] Teleporting disabled since you have " + amountSulphurAsh + " sulphurous essence in your inventory!", null);
-                    }
+                if (shouldConsume) {
+                    event.consume();
+                    client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "[Prevent Misclicks] Teleporting disabled" +
+                            " since you have " + amountSulphurAsh + " sulphurous essence in your inventory!", null);
+                    client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "If you believe this is a mistake, please report it to the GitHub", null);
                 }
             }
-        }
+            }
         if (client.getVarbitValue(VARBIT_FOUNTAIN_OF_RUNE) == 0) {
             switch (event.getParam1()) {
                 case SINISTER_OFFERING:
