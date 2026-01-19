@@ -152,7 +152,8 @@ public class PreventSGMPlugin extends Plugin {
                 if (isItem) {
                     shouldConsume = !(menu.equals("Wield") || menu.equals("Wear") || menu.equals("Check") || menu.equals("Drop") ||
                                         menu.equals("Equip") || menu.equals("Trim") || menu.equals("Untrim") ||
-                                    menu.equals("Use") || menu.equals("Examine") || menu.equals("Cancel") || menu.equals("Drink") || menu.equals("Eat"));
+                                    menu.equals("Use") || menu.equals("Examine") || menu.equals("Cancel") || menu.equals("Drink") ||
+                            menu.equals("Eat") || menu.equals("Cast") || menu.equals("Energy")); //cast is for alchemy spells, hopefully this doesn't break anything
                 } else if (isWornItem) {
                     shouldConsume = !(menu.equals("Remove") || menu.equals("Examine") || menu.equals("Cancel") || menu.equals("Check") ||
                                         menu.equals("Trim") || menu.equals("Untrim"));
@@ -160,6 +161,7 @@ public class PreventSGMPlugin extends Plugin {
                     shouldConsume = menu.toLowerCase().contains("teleport") || event.getMenuTarget().toLowerCase().contains("teleport");
                 }
                 if (shouldConsume) {
+                    System.out.println(menu);
                     event.consume();
                     client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "[Prevent Misclicks] Teleporting disabled" +
                             " since you have " + amountSulphurAsh + " sulphurous essence in your inventory!", null);
