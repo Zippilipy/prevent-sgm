@@ -152,7 +152,7 @@ public class PreventSGMPlugin extends Plugin {
                 if (isItem) {
                     shouldConsume = !(menu.equals("Wield") || menu.equals("Wear") || menu.equals("Check") || menu.equals("Drop") ||
                                         menu.equals("Equip") || menu.equals("Trim") || menu.equals("Untrim") ||
-                                    menu.equals("Use") || menu.equals("Examine") || menu.equals("Cancel"));
+                                    menu.equals("Use") || menu.equals("Examine") || menu.equals("Cancel") || menu.equals("Drink") || menu.equals("Eat"));
                 } else if (isWornItem) {
                     shouldConsume = !(menu.equals("Remove") || menu.equals("Examine") || menu.equals("Cancel") || menu.equals("Check") ||
                                         menu.equals("Trim") || menu.equals("Untrim"));
