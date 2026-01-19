@@ -161,7 +161,6 @@ public class PreventSGMPlugin extends Plugin {
                     shouldConsume = menu.toLowerCase().contains("teleport") || event.getMenuTarget().toLowerCase().contains("teleport");
                 }
                 if (shouldConsume) {
-                    System.out.println(menu);
                     event.consume();
                     client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "[Prevent Misclicks] Teleporting disabled" +
                             " since you have " + amountSulphurAsh + " sulphurous essence in your inventory!", null);
