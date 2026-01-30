@@ -10,11 +10,9 @@ import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.VarbitID;
-import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -48,8 +46,34 @@ public class PreventSGMPlugin extends Plugin {
     private boolean sinister = false;
     private boolean demonic = false;
 
+    //Some people will download this plugin without understanding what it does / forget I'm sure, so this is for them!
+    private boolean haveGivenWarningAboutWithdrawal = false;
+    private int maxWarnings = 5;
+    private int amountOfWarningsAboutWrongOptions = 0;
+
+    private void countItemsInInventory() {
+        Widget inventory = client.getWidget(InterfaceID.Inventory.ITEMS);
+        if (inventory == null) {
+            return;
+        }
+        Widget[] items = inventory.getChildren();
+        if (items == null) {
+            return;
+        }
+        amountOfSand = (int) Arrays.stream(items).filter(item -> item.getItemId() == ItemID.BUCKET_SAND).count();
+        amountOfSeaweed = (int) Arrays.stream(items).filter(item -> item.getItemId() == ItemID.GIANT_SEAWEED).count();
+        int amountBones = (int) Arrays.stream(items).filter(item -> isSinisterBone(item.getItemId())).count();
+        int amountAshes = (int) Arrays.stream(items).filter(item -> isDemonicAsh(item.getItemId())).count();
+        demonic = amountAshes >= config.demonic();
+        sinister = amountBones >= config.sinister();
+    }
+
     @Override
     protected void startUp() throws Exception {
+        if (client == null || client.getWidget(InterfaceID.Inventory.ITEMS) == null) {
+            return;
+        }
+        countItemsInInventory();
     }
 
     @Override
@@ -65,14 +89,8 @@ public class PreventSGMPlugin extends Plugin {
     @Subscribe
     public void onPlayerSpawned(PlayerSpawned event) {
         if (event.getPlayer().equals(client.getLocalPlayer())) {
-            Widget inventory = client.getWidget(ComponentID.INVENTORY_CONTAINER);
-            Widget[] items = inventory.getChildren();
-            amountOfSand = (int) Arrays.stream(items).filter(item -> item.getItemId() == ItemID.BUCKET_SAND).count();
-            amountOfSeaweed = (int) Arrays.stream(items).filter(item -> item.getItemId() == ItemID.GIANT_SEAWEED).count();
-            int amountBones = (int) Arrays.stream(items).filter(item -> isSinisterBone(item.getItemId())).count();
-            int amountAshes = (int) Arrays.stream(items).filter(item -> isDemonicAsh(item.getItemId())).count();
-            demonic = amountAshes >= config.demonic();
-            sinister = amountBones >= config.sinister();
+
+            countItemsInInventory();
         }
     }
 
@@ -102,21 +120,6 @@ public class PreventSGMPlugin extends Plugin {
         }
     }
 
-    @Subscribe
-    public void onConfigChanged(ConfigChanged event) {
-        if (client == null) {
-            return;
-        }
-        Widget inventory = client.getWidget(ComponentID.INVENTORY_CONTAINER);
-        if (inventory == null) {
-            return;
-        }
-        Widget[] items = inventory.getChildren();
-        int amountBones = (int) Arrays.stream(items).filter(item -> isSinisterBone(item.getItemId())).count();
-        int amountAshes = (int) Arrays.stream(items).filter(item -> isDemonicAsh(item.getItemId())).count();
-        demonic = amountAshes >= config.demonic();
-        sinister = amountBones >= config.sinister();
-    }
     /*
      * This is a pretty silly way of doing this, but
      * onMenuOptionClicked gives the fastest response
@@ -131,7 +134,7 @@ public class PreventSGMPlugin extends Plugin {
             if (client == null) {
                 return;
             }
-            Widget inventory = client.getWidget(ComponentID.INVENTORY_CONTAINER);
+            Widget inventory = client.getWidget(InterfaceID.Inventory.ITEMS);
             if (inventory == null) {
                 return;
             }
@@ -164,7 +167,6 @@ public class PreventSGMPlugin extends Plugin {
                     event.consume();
                     client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "[Prevent Misclicks] Teleporting disabled" +
                             " since you have " + amountSulphurAsh + " sulphurous essence in your inventory!", null);
-                    client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "If you believe this is a mistake, please report it to the GitHub", null);
                 }
             }
             }
@@ -188,57 +190,78 @@ public class PreventSGMPlugin extends Plugin {
                     break;
             }
         }
-        switch (event.getParam1()) {
-            case WITHDRAW:
-                if (config.disableWithdraw()) {
-                    if (amountOfSand == config.sand() && event.getItemId() == ItemID.BUCKET_SAND) {
-                        event.consume();
-                        return;
-                    } else if (amountOfSeaweed == config.seaweed() && event.getItemId() == ItemID.GIANT_SEAWEED) {
-                        event.consume();
+        if (config.seaweedToggle()) {
+            switch (event.getParam1()) {
+                case WITHDRAW:
+                    if (config.disableWithdraw()) {
+                        if (amountOfSand == config.sand() && event.getItemId() == ItemID.BUCKET_SAND) {
+                            event.consume();
+                            if (!haveGivenWarningAboutWithdrawal) {
+                                client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "[Prevent Misclicks] Withdrawal of sand disabled.", null);
+                                haveGivenWarningAboutWithdrawal = true;
+                            }
+                            return;
+                        } else if (amountOfSeaweed == config.seaweed() && event.getItemId() == ItemID.GIANT_SEAWEED) {
+                            event.consume();
+                            if (!haveGivenWarningAboutWithdrawal) {
+                                client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "[Prevent Misclicks] Withdrawal of seaweed disabled.", null);
+                                haveGivenWarningAboutWithdrawal = true;
+                            }
+                            return;
+                        }
+                    }
+                    int itemID = event.getItemId();
+                    Widget bank = client.getWidget(InterfaceID.Bankmain.UNIVERSE);
+                    if (bank == null || bank.isHidden()) {
                         return;
                     }
-                }
-                updateInventory(event.getItemId());
-                break;
-            case DEPOSIT:
-                if (event.getItemId() == ItemID.GIANT_SEAWEED) {
-                    amountOfSeaweed -= 1;
-                } else if (event.getItemId() == ItemID.BUCKET_SAND) {
+                    if (itemID == ItemID.GIANT_SEAWEED) {
+                        if (!event.getMenuOption().equals("Withdraw-1")) {
+                            if (amountOfWarningsAboutWrongOptions < maxWarnings) {
+                                client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "[Prevent Misclicks] Your withdraw option must be withdraw-1 for this plugin to work!" +
+                                        " Please change with Menu Entry Swapper", null);
+                                amountOfWarningsAboutWrongOptions+=1;
+                            }
+                        }
+                        amountOfSeaweed += 1;
+                    } else if (itemID == ItemID.BUCKET_SAND) {
+                        if (!event.getMenuOption().equals("Withdraw-" + config.sand())) {
+                            if (amountOfWarningsAboutWrongOptions < maxWarnings) {
+                                client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "[Prevent Misclicks] Your withdraw option must be withdraw-" + config.sand() + " for this plugin to work!" +
+                                        " Please change with Menu Entry Swapper", null);
+                                amountOfWarningsAboutWrongOptions+=1;
+                            }
+                        }
+                        amountOfSand += config.sand();
+                    }
+                    break;
+                case DEPOSIT:
+                    if (event.getItemId() == ItemID.GIANT_SEAWEED) {
+                        amountOfSeaweed -= 1;
+                    } else if (event.getItemId() == ItemID.BUCKET_SAND) {
+                        amountOfSand = 0;
+                    } else if( event.getItemId() == ItemID.MOLTEN_GLASS) { //if someone tries to withdraw seaweed or sand
+                        //with full inventory of glass, it's gonna count of these variables which breaks the plugin
+                        //this fix is not foolproof but it's gonna work for that case.
+                        amountOfSeaweed = 0;
+                        amountOfSand = 0;
+                    }
+                    break;
+                case DEPOSIT_ALL:
                     amountOfSand = 0;
-                } else if( event.getItemId() == ItemID.MOLTEN_GLASS) { //if someone tries to withdraw seaweed or sand
-                    //with full inventory of glass, it's gonna count of these variables which breaks the plugin
-                    //this fix is not foolproof but it's gonna work for that case.
                     amountOfSeaweed = 0;
-                    amountOfSand = 0;
-                }
-                break;
-            case DEPOSIT_ALL:
-                amountOfSand = 0;
-                amountOfSeaweed = 0;
-                break;
-            case SUPERGLASS_MAKE:
-                if (checkSeaweedAndSand()) {
-                    amountOfSand = 0;
-                    amountOfSeaweed = 0;
-                } else {
-                    event.consume();
-                    client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "[Prevent Misclicks] Superglass make spell disabled. If you think this is a mistake, use the deposit inventory or deposit glass to reset.", null);
-                }
-                break;
-            default:
-        }
-    }
-
-    private void updateInventory(int itemID) {
-        Widget bank = client.getWidget(ComponentID.BANK_CONTAINER);
-        if (bank == null || bank.isHidden()) {
-            return;
-        }
-        if (itemID == ItemID.GIANT_SEAWEED) {
-            amountOfSeaweed += 1;
-        } else if (itemID == ItemID.BUCKET_SAND) {
-            amountOfSand += config.sand();
+                    break;
+                case SUPERGLASS_MAKE:
+                    if (checkSeaweedAndSand()) {
+                        amountOfSand = 0;
+                        amountOfSeaweed = 0;
+                    } else {
+                        event.consume();
+                        client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "[Prevent Misclicks] Superglass make spell disabled.", null);
+                    }
+                    break;
+                default:
+            }
         }
     }
 
