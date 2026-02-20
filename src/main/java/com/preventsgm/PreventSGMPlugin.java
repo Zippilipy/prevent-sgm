@@ -10,6 +10,7 @@ import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -148,15 +149,20 @@ public class PreventSGMPlugin extends Plugin {
                 amountSulphurAsh = inventoryFiltered[0].getItemQuantity();
             }
             if (amountSulphurAsh >= config.sulphurAmountToggle()) {
+                String menu = event.getMenuOption();
+                if (menu.equals("Pass-through") && event.getId() == ObjectID.PMOON_TELEBOX_3X3) {
+                    event.consume();
+                    client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "[Prevent Misclicks] Leaving the cave disabled" +
+                            " since you have " + amountSulphurAsh + " sulphurous essence in your inventory!", null);
+                }
                 boolean isItem = event.getParam1() == InterfaceID.Inventory.ITEMS; //if the item is worn, this is FALSE.
                 boolean isWornItem = event.getParam1() >= InterfaceID.Wornitems.UNIVERSE && event.getParam1() <= InterfaceID.Wornitems.EXTRA_AMMO_SLOT; //check all slots
                 boolean shouldConsume = false;
-                String menu = event.getMenuOption();
                 if (isItem) {
                     shouldConsume = !(menu.equals("Wield") || menu.equals("Wear") || menu.equals("Check") || menu.equals("Drop") ||
                                         menu.equals("Equip") || menu.equals("Trim") || menu.equals("Untrim") ||
                                     menu.equals("Use") || menu.equals("Examine") || menu.equals("Cancel") || menu.equals("Drink") ||
-                            menu.equals("Eat") || menu.equals("Cast") || menu.equals("Energy")); //cast is for alchemy spells, hopefully this doesn't break anything
+                            menu.equals("Eat") || menu.equals("Cast") || menu.equals("Energy") || menu.equals("Lookup")); //cast is for alchemy spells, hopefully this doesn't break anything
                 } else if (isWornItem) {
                     shouldConsume = !(menu.equals("Remove") || menu.equals("Examine") || menu.equals("Cancel") || menu.equals("Check") ||
                                         menu.equals("Trim") || menu.equals("Untrim"));
