@@ -155,16 +155,7 @@ public class PreventSGMPlugin extends Plugin {
                 if (event.getId() == ObjectID.PMOON_TELEBOX_3X3 && menu.equals("Pass-through")) {
                     MenuEntry entry = event.getMenuEntry();
                     WorldView wv = client.getWorldView(entry.getWorldViewId());
-                    int level = wv.getPlane();
-                    Scene scene = wv.getScene();
-                    Tile[][][] tiles = scene.getTiles();
-                    Tile tile;
-                    try {
-                        tile = tiles[level][entry.getParam0()][entry.getParam1()];
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        return;
-                    }
-                    LocalPoint localPoint = tile.getLocalLocation();
+                    LocalPoint localPoint = LocalPoint.fromScene(entry.getParam0(), entry.getParam1(), wv);
                     WorldPoint worldPoint = WorldPoint.fromLocal(client, localPoint);
                     int worldX = worldPoint.getX();
                     int worldY = worldPoint.getY();
