@@ -150,7 +150,8 @@ public class PreventSGMPlugin extends Plugin {
             }
             if (amountSulphurAsh >= config.sulphurAmountToggle()) {
                 String menu = event.getMenuOption();
-                if (menu.equals("Pass-through") && event.getId() == ObjectID.PMOON_TELEBOX_3X3) {
+                //52 and 71 are 'magic numbers' that are the x and y axis of the entrance I want to block, meaning that the other entrances are not blocked.
+                if (menu.equals("Pass-through") && event.getId() == ObjectID.PMOON_TELEBOX_3X3 && event.getParam1() == 52 && event.getParam0() == 71) {
                     event.consume();
                     client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "[Prevent Misclicks] Leaving the cave disabled" +
                             " since you have " + amountSulphurAsh + " sulphurous essence in your inventory!", null);
