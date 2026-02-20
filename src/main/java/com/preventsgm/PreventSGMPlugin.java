@@ -2,14 +2,16 @@ package com.preventsgm;
 
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.Item;
-import net.runelite.api.events.*;
-import net.runelite.api.gameval.ItemID;
-import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.*;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.BeforeRender;
+import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.PlayerSpawned;
+import net.runelite.api.gameval.*;
 import net.runelite.api.gameval.InventoryID;
-import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
@@ -49,7 +51,7 @@ public class PreventSGMPlugin extends Plugin {
 
     //Some people will download this plugin without understanding what it does / forget I'm sure, so this is for them!
     private boolean haveGivenWarningAboutWithdrawal = false;
-    private int maxWarnings = 5;
+    private final int maxWarnings = 5;
     private int amountOfWarningsAboutWrongOptions = 0;
 
     private void countItemsInInventory() {
@@ -150,12 +152,31 @@ public class PreventSGMPlugin extends Plugin {
             }
             if (amountSulphurAsh >= config.sulphurAmountToggle()) {
                 String menu = event.getMenuOption();
-                //52 and 71 are 'magic numbers' that are the x and y axis of the entrance I want to block, meaning that the other entrances are not blocked.
-                if (menu.equals("Pass-through") && event.getId() == ObjectID.PMOON_TELEBOX_3X3 && event.getParam1() == 52 && event.getParam0() == 71) {
-                    event.consume();
-                    client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "[Prevent Misclicks] Leaving the cave disabled" +
-                            " since you have " + amountSulphurAsh + " sulphurous essence in your inventory!", null);
+                if (event.getId() == ObjectID.PMOON_TELEBOX_3X3 && menu.equals("Pass-through")) {
+                    MenuEntry entry = event.getMenuEntry();
+                    WorldView wv = client.getWorldView(entry.getWorldViewId());
+                    int level = wv.getPlane();
+                    Scene scene = wv.getScene();
+                    Tile[][][] tiles = scene.getTiles();
+                    Tile tile;
+                    try {
+                        tile = tiles[level][entry.getParam0()][entry.getParam1()];
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        return;
+                    }
+                    LocalPoint localPoint = tile.getLocalLocation();
+                    WorldPoint worldPoint = WorldPoint.fromLocal(client, localPoint);
+                    int worldX = worldPoint.getX();
+                    int worldY = worldPoint.getY();
+                    //1439 and 9612 are 'magic numbers' that are the non-relative x and y axis of the entrance
+                    // I want to block, meaning that the other entrances are not blocked.
+                    if (worldX == 1439 && worldY == 9612) {
+                        event.consume();
+                        client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "[Prevent Misclicks] Leaving the cave disabled" +
+                                " since you have " + amountSulphurAsh + " sulphurous essence in your inventory!", null);
+                    }
                 }
+
                 boolean isItem = event.getParam1() == InterfaceID.Inventory.ITEMS; //if the item is worn, this is FALSE.
                 boolean isWornItem = event.getParam1() >= InterfaceID.Wornitems.UNIVERSE && event.getParam1() <= InterfaceID.Wornitems.EXTRA_AMMO_SLOT; //check all slots
                 boolean shouldConsume = false;
