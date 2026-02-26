@@ -133,6 +133,7 @@ public class PreventSGMPlugin extends Plugin {
      */
     @Subscribe
     public void onMenuOptionClicked(MenuOptionClicked event) {
+        int param1 = event.getParam1();
         if (config.sulphurTeleportToggle()) {
             if (client == null) {
                 return;
@@ -168,8 +169,11 @@ public class PreventSGMPlugin extends Plugin {
                     }
                 }
 
-                boolean isItem = event.getParam1() == InterfaceID.Inventory.ITEMS; //if the item is worn, this is FALSE.
-                boolean isWornItem = event.getParam1() >= InterfaceID.Wornitems.UNIVERSE && event.getParam1() <= InterfaceID.Wornitems.EXTRA_AMMO_SLOT; //check all slots
+                boolean isItem = param1 == InterfaceID.Inventory.ITEMS; //if the item is worn, this is FALSE.
+                boolean isWornItem = param1 >= InterfaceID.Wornitems.UNIVERSE && param1 <= InterfaceID.Wornitems.EXTRA_AMMO_SLOT
+                        && param1 != InterfaceID.Wornitems.EQUIPMENT && param1 != InterfaceID.Wornitems.PRICECHECKER
+                        && param1 != InterfaceID.Wornitems.DEATHKEEP && param1 != InterfaceID.Wornitems.CALL_FOLLOWER; //check all slots
+                System.out.println("isItem: " + isItem + "\nisWornItem: " + isWornItem);
                 boolean shouldConsume = false;
                 if (isItem) {
                     shouldConsume = !(menu.equals("Wield") || menu.equals("Wear") || menu.equals("Check") || menu.equals("Drop") ||
@@ -190,7 +194,7 @@ public class PreventSGMPlugin extends Plugin {
             }
             }
         if (client.getVarbitValue(VARBIT_FOUNTAIN_OF_RUNE) == 0) {
-            switch (event.getParam1()) {
+            switch (param1) {
                 case SINISTER_OFFERING:
                     if (config.sinisterToggle()) {
                         if (!sinister) {
@@ -210,7 +214,7 @@ public class PreventSGMPlugin extends Plugin {
             }
         }
         if (config.seaweedToggle()) {
-            switch (event.getParam1()) {
+            switch (param1) {
                 case WITHDRAW:
                     if (config.disableWithdraw()) {
                         if (amountOfSand == config.sand() && event.getItemId() == ItemID.BUCKET_SAND) {
