@@ -173,7 +173,6 @@ public class PreventSGMPlugin extends Plugin {
                 boolean isWornItem = param1 >= InterfaceID.Wornitems.UNIVERSE && param1 <= InterfaceID.Wornitems.EXTRA_AMMO_SLOT
                         && param1 != InterfaceID.Wornitems.EQUIPMENT && param1 != InterfaceID.Wornitems.PRICECHECKER
                         && param1 != InterfaceID.Wornitems.DEATHKEEP && param1 != InterfaceID.Wornitems.CALL_FOLLOWER; //check all slots
-                System.out.println("isItem: " + isItem + "\nisWornItem: " + isWornItem);
                 boolean shouldConsume = false;
                 if (isItem) {
                     shouldConsume = !(menu.equals("Wield") || menu.equals("Wear") || menu.equals("Check") || menu.equals("Drop") ||
