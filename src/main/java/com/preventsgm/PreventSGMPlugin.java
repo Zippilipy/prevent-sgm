@@ -4,6 +4,7 @@ import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.Item;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.WorldView;
@@ -104,7 +105,7 @@ public class PreventSGMPlugin extends Plugin {
 
     @Subscribe
     public void onBeforeRender(BeforeRender event) {
-        if (client == null) {
+        if (client == null || client.getGameState() != GameState.LOGGED_IN) {
             return;
         }
         if (config.seaweedToggle()) {
